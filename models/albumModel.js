@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import uniqueValidator from 'mongoose-unique-validator'
 
 const albumSchema = new mongoose.Schema({
   name: { type: String, required: true },
@@ -11,7 +10,5 @@ const albumSchema = new mongoose.Schema({
   user: { type: mongoose.Schema.ObjectId, ref: 'User', required: true }
 })
 
-albumSchema.plugin(uniqueValidator)
-
-export default mongoose.model('User', albumSchema)
+export default mongoose.model('Album', albumSchema)
 
