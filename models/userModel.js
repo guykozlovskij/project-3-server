@@ -1,8 +1,6 @@
 import mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import mongooseHidden from 'mongoose-hidden'
-// to do add unique plugin
-// add hidden plugin
 
 const userSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
