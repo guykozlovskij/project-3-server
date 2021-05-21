@@ -1,0 +1,37 @@
+export default [
+  {
+    username: 'user1',
+    password: 'pass',
+    passwordConfirmation: 'pass',
+    email: 'user1@user',
+    image: '',
+    about: '',
+    likes: [],
+    comments: [],
+    addedSongs: [],
+  },
+  {
+    username: 'user2',
+    password: 'pass',
+    passwordConfirmation: 'pass',
+    email: 'user2@user',
+    image: '',
+    about: '',
+    playlists: [],
+    likes: [],
+    comments: [],
+    addedSongs: [],
+  },
+  {
+    username: 'user3',
+    password: 'pass',
+    passwordConfirmation: 'pass',
+    email: 'user3@user',
+    image: '',
+    about: '',
+    playlists: [],
+    likes: [],
+    comments: [],
+    addedSongs: [],
+  }
+]
