@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 
 const songSchema = new mongoose.Schema({
   name: { type: String, required: true },
-  leadArtist: { type: String, required: true },
+  leadArtist: { type: mongoose.Schema.ObjectId, ref:'Artist', required: true },
   image: { type: String, default: 'default link' }, // ! I suggest we remove default link, front end can provide default image if no image added
   year: { type: Date, required: true },
   audioSrc: { type: String },
