@@ -36,15 +36,24 @@ async function seedDatabase() {
     console.log(users)
 
     // // ? SONGS
-    // // add user to each song
+    // add user to each song
     const songsWithUser = songData.map((song) => {
       return { ...song, user: users[0]._id }
     })
-    // // add songs to the database
+    // add songs to the database
     const songs = await Song.create(songsWithUser)
     console.log(`${songs.length} songs have been added`)
     console.log(songs)
-    // TODO add song to the users addedSongs
+    // add song to the users addedSongs
+    const seedUser = users[0]
+    const songList = await Song.find()
+    songList.map((song) => {
+      return seedUser.addedSongs.push(song._id)
+    })
+    console.log(seedUser)
+    console.log('Songs added to users addedSongs')
+
+
     
     // ? Assign a user to each pokemon..
     // const pokemonDataWithUsers = pokemonData.map(pokemon => {
