@@ -40,7 +40,7 @@ async function seedDatabase() {
 
     //! Seed artists
     const artistDataWithUser = artistData.map(artist => {
-      return { ...artist, owner: users[0] }
+      return { ...artist, user: users[0] }
     })
 
     const artists = await Artist.create(artistDataWithUser)
