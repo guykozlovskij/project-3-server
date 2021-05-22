@@ -7,7 +7,7 @@ import router from './views/router.js'
 
 // ? My own middleware
 import logger from './middleware/logger.js'
-// import errorHandler from './middleware/errorHandler.js'
+import errorHandler from './middleware/errorHandler.js'
 
 const app = express()
 
@@ -18,7 +18,7 @@ app.use(logger)
 // ! Router is a special piece of middleware.
 app.use('/api', router)
 // ! Error handling is also special.
-// app.use(errorHandler)
+app.use(errorHandler)
 
 
 export default app
