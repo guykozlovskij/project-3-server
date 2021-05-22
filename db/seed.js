@@ -1,4 +1,3 @@
-
 // ! This is our little seed program. It is going to connect to mongo DB, then save some
 // ! pokemon, then disconnect.
 // ? 1) Connect to DB
@@ -13,11 +12,13 @@ import connectToDb from './connectToDb.js'
 import User from '../models/userModel.js'
 import usersData from './data/userData.js'
 
+import Song from '../models/songModel.js'
+import songData from './data/songData.js'
+
 // ? Import my mongoose model for pokemon.
 // ? Import my pokemon data...
 // import Pokemon from '../models/pokemon.js'
 // import pokemonData from './data/pokemon.js'
-
 
 async function seedDatabase() {
   try {
@@ -33,6 +34,19 @@ async function seedDatabase() {
     const users = await User.create(usersData)
     console.log(`🤖 ${users.length} users created!`)
     console.log(users)
+
+    // ? SONGS
+    // add user to each song
+    const songsWithUser = songData.map((song) => {
+      return { ...song, user: users[0]._id }
+    })
+
+    // add songs to the database
+    const songs = await Song.create(songsWithUser).console.log(
+      `${songs.length} songs have been added`
+    )
+    console.log(songs)
+    // TODO add song to the users addedSongs
 
     // ? Assign a user to each pokemon..
     // const pokemonDataWithUsers = pokemonData.map(pokemon => {
@@ -63,7 +77,6 @@ async function seedDatabase() {
     // ? Disconnect once we've finished..
     await mongoose.connection.close()
     console.log('🤖 Disconnected from mongo. All done!')
-
   } catch (e) {
     console.log('🤖 Something went wrong')
     console.log(e)
@@ -72,4 +85,3 @@ async function seedDatabase() {
 }
 
 seedDatabase()
-
