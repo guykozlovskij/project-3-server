@@ -1,3 +1,4 @@
+
 // ! This is our little seed program. It is going to connect to mongo DB, then save some
 // ! pokemon, then disconnect.
 // ? 1) Connect to DB
@@ -10,15 +11,17 @@ import connectToDb from './connectToDb.js'
 
 // ! Import my user model and data
 import User from '../models/userModel.js'
-import usersData from './data/userData.js'
-
+import Artist from '../models/artistModel.js'
+import Album from '../models/albumModel.js'
 import Song from '../models/songModel.js'
+
+
+import usersData from './data/userData.js'
+import artistData from './data/artistData.js'
+import albumData from './data/albumData.js'
 import songData from './data/songData.js'
 
-// ? Import my mongoose model for pokemon.
-// ? Import my pokemon data...
-// import Pokemon from '../models/pokemon.js'
-// import pokemonData from './data/pokemon.js'
+
 
 async function seedDatabase() {
   try {
@@ -33,57 +36,49 @@ async function seedDatabase() {
     // ! Seed with users
     const users = await User.create(usersData)
     console.log(`🤖 ${users.length} users created!`)
-    console.log(users)
+    // console.log(users)
 
-    // // ? SONGS
-    // add user to each song
-    const songsWithUser = songData.map((song) => {
-      return { ...song, user: users[0]._id }
+    //! Seed artists
+    const artistDataWithUser = artistData.map(artist => {
+      return { ...artist, user: users[0] }
+    })
+
+    const artists = await Artist.create(artistDataWithUser)
+
+    // console.log(artists[0])
+
+    //! Seed albums
+
+    const albumWithArtistAndUser = albumData.map(album => {
+      return { ...album, user: users[0], artists: artists }
+    })
+    // albumWithArtistAndUser.artists.push(artists[0])
+
+    const albums = await Album.create(albumWithArtistAndUser)
+
+    console.log(albums)
+
+    //! SONGS 
+    const songsWithUser = songData.map(song => {
+      return { ...song, user: users[0]._id, leadArtist: artists[0], artists: artists, albums: albums[0], }
     })
     // add songs to the database
     const songs = await Song.create(songsWithUser)
     console.log(`${songs.length} songs have been added`)
     console.log(songs)
     // add song to the users addedSongs
-    const seedUser = users[0]
-    const songList = await Song.find()
-    songList.map((song) => {
-      return seedUser.addedSongs.push(song._id)
-    })
-    console.log(seedUser)
+    //! adding song to user addedSongs
+
+    const userWithAddedSong = users[0].addedSongs.push(songs[0])
+
+    console.log(userWithAddedSong)
+
     console.log('Songs added to users addedSongs')
-
-
-    
-    // ? Assign a user to each pokemon..
-    // const pokemonDataWithUsers = pokemonData.map(pokemon => {
-    //   return { ...pokemon, user: users }
-    // })
-
-    // console.log(pokemonDataWithUsers)
-
-    // ? Now I can seed my database using mongoose....
-    // const pokemon = await Pokemon.create(pokemonDataWithUsers)
-    // console.log(`🤖 ${pokemon.length} pokemon created!`)
-
-    // ! --------------------------------------
-    // ! Adding a single comment to my first pokemon
-    // const myComment = {
-    //   text: 'This is my first comment',
-    //   user: users[0]._id,
-    // }
-    // ? Grab pokemon to comment on..
-    // const pokemonToCommentOn = pokemon[0]
-    // ? Add the comment to the pokemon
-    // pokemonToCommentOn.comments.push(myComment)
-    // ? Saves the pokemon
-    // const savedPokemon = await pokemonToCommentOn.save()
-    // console.log(savedPokemon)
-    // ! --------------------------------------
 
     // ? Disconnect once we've finished..
     await mongoose.connection.close()
     console.log('🤖 Disconnected from mongo. All done!')
+
   } catch (e) {
     console.log('🤖 Something went wrong')
     console.log(e)
@@ -92,3 +87,4 @@ async function seedDatabase() {
 }
 
 seedDatabase()
+

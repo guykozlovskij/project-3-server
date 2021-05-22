@@ -7,7 +7,7 @@ const artistSchema = new mongoose.Schema({
   image: { type: String, default: 'default link' },
   songs: [{ type: mongoose.Schema.ObjectId, ref: 'Song' }],
   albums: [{ type: mongoose.Schema.ObjectId, ref: 'Album' }],
-  owner: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  user: { type: mongoose.Schema.ObjectId, ref: 'User' },
 })
 
 export default mongoose.model('Artist', artistSchema)
