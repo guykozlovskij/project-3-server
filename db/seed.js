@@ -57,23 +57,47 @@ async function seedDatabase() {
     const albums = await Album.create(albumWithArtistAndUser)
 
     // console.log(albums)
-
+    const commentToAdd = {
+      username: users[0]._id,
+      text: 'This is my comment.'
+    }
     //! SONGS 
     const songsWithUser = songData.map(song => {
-      return { ...song, user: users[0]._id, leadArtist: artists[0], artists: artists, album: albums[0], }
+      return {
+        ...song,
+        user: users[0]._id,
+        leadArtist: artists[0],
+        artists: artists,
+        album: albums[0],
+        comments: commentToAdd
+      }
     })
     // add songs to the database
     const songs = await Song.create(songsWithUser)
     console.log(`${songs.length} songs have been added`)
+
     // console.log(songs)
     // add song to the users addedSongs
     //! adding the song to an album
     const albumToAddSongTo = await Album.findById(albums[0]._id)
     songs.map(song => {
       albumToAddSongTo.songs.push(song._id)
+      albumToAddSongTo.comments.push(commentToAdd)
     })
     const albumWithAddedSongs = await albumToAddSongTo.save()
     console.log(albumWithAddedSongs)
+    //! adding songs to artist 
+    const artistToAddSongsTo = await Artist.findById(artists[0]._id)
+    console.log(artistToAddSongsTo)
+    songs.map(song => {
+      artistToAddSongsTo.songs.push(song._id)
+      artistToAddSongsTo.comments.push(commentToAdd)
+    })
+    //! adding albums to artist
+    albums.map(album => {
+      artistToAddSongsTo.albums.push(album)
+    })
+    await artistToAddSongsTo.save()
     //! adding song to user addedSongs
 
     const userWithSong = await User.findById(users[0]._id)

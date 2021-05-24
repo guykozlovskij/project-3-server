@@ -3,17 +3,7 @@ import uniqueValidator from 'mongoose-unique-validator'
 import mongooseHidden from 'mongoose-hidden'
 import bcrypt from 'bcrypt'
 
-const userSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  username: { type: String, required: true, unique: true },
-  password: { type: String, required: true },
-  image: { type: String, default: 'urlwithdefaultavatar' },
-  about: { type: String },
-  playlists: [{ type: mongoose.Schema.ObjectId, ref: 'Playlist' }],
-  likes: [{ type: String }],
-  comments: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
-  addedSongs: [{ type: mongoose.Schema.ObjectId, ref: 'Song' }],
-})
+import userSchema from './userSchema.js'
 
 //  * Hash the password
 userSchema.pre('save', function encryptPassword(next) {
