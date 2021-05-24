@@ -1,0 +1,65 @@
+@albumId = 60abc7ff4b6beb66e32ab0d2
+@commentId = 60abbbe1da173f591173dce2
+
+@songId = 60abc8004b6beb66e32ab0d4
+
+GET http://localhost:4000/api/albums
+
+
+###
+GET http://localhost:4000/api/albums/{{albumId}}
+
+###
+GET http://localhost:4000/api/albums/{{albumId}}/comments
+
+###
+POST http://localhost:4000/api/albums/{{albumId}}/comments
+Content-Type: application/json
+
+{
+  "text": "This is my comment LOLOLO"
+}
+###
+PUT http://localhost:4000/api/albums/{{albumId}}/comments/{{commentId}}
+Content-Type: application/json
+
+{
+  "text": "This is my comment. LOL"
+}
+###
+DELETE  http://localhost:4000/api/albums/{{albumId}}/comments/{{commentId}}
+Content-Type: application/json
+
+###
+POST http://localhost:4000/api/albums
+Content-type: application/json
+
+{
+  "name": "Album5",
+  "year": "2010-01-01",
+  "lenght": 0,
+  "songs": []
+}
+
+
+###
+PUT http://localhost:4000/api/albums/{{albumId}}
+Content-type: application/json
+
+{
+  "name": "Album9",
+  "year": "2010-01-01",
+  "lenght": 0,
+  "songs": []
+}
+
+###
+DELETE  http://localhost:4000/api/albums/{{albumId}}
+Content-type: application/json
+
+
+###
+GET http://localhost:4000/api/albums/{{albumId}}/songs
+
+###
+DELETE http://localhost:4000/api/albums/{{albumId}}/songs/{{songId}}
