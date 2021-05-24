@@ -1,5 +1,5 @@
-@albumId = 60abb89a26a9ed55e445d8cb
-@commentId = 60abb89b26a9ed55e445d8d2
+@albumId = 60abbbe1da173f591173dcda
+@commentId = 60abbbe1da173f591173dce1
 
 GET http://localhost:4000/api/albums
 

@@ -20,13 +20,14 @@ async function album(req, res, next) {
     const { albumId } = req.params
     const album = await Album.findById(albumId).populate('songs').populate('artists')
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      res.status(404).json({ error: { message: 'Album not found' } })
     }
     res.status(200).json(album)
   } catch (err) {
     next(err)
   }
 }
+
 //! Get all comments for this particular album 
 async function comments(req, res, next) {
   try {
@@ -40,6 +41,7 @@ async function comments(req, res, next) {
     next(err)
   }
 }
+
 //! add an album
 async function add(req, res, next) {
   try {
@@ -51,6 +53,7 @@ async function add(req, res, next) {
     next(err)
   }
 }
+
 //! edit an album
 async function edit(req, res, next) {
   try {
@@ -67,6 +70,7 @@ async function edit(req, res, next) {
     next(err)
   }
 }
+
 //! delete an album
 async function remove(req, res, next) {
   try {
@@ -89,6 +93,7 @@ async function songs(req, res, next) {
     next(err)
   }
 }
+
 //! add a song to album
 async function addSong(req, res, next) {
   try {
@@ -99,7 +104,7 @@ async function addSong(req, res, next) {
     }
     album.songs.push(req.body)
     const albumWithNewSong = await album.save()
-    res.status(200).json(albumWithNewSong)
+    res.status(200).json(albumWithNewSong.songs)
   } catch (err) {
     next(err)
   }
@@ -116,12 +121,11 @@ async function removeSong(req, res, next) {
     const song = album.songs.id(songId)
     song.remove()
     const albumWithDeletedSong = await album.save()
-    res.status(200).json(albumWithDeletedSong)
+    res.status(200).json(albumWithDeletedSong.songs)
   } catch (err) {
     next(err)
   }
 }
-
 
 //! add a comment to songs
 async function addComment(req, res, next) {
@@ -135,11 +139,12 @@ async function addComment(req, res, next) {
     req.body.username = user[0]
     album.comments.push(req.body)
     const albumWithNewComment = await album.save()
-    res.status(200).json(albumWithNewComment)
+    res.status(200).json(albumWithNewComment.comments)
   } catch (err) {
     next(err)
   }
 }
+
 //! edit a comment to songs
 async function editComment(req, res, next) {
   try {
@@ -151,11 +156,12 @@ async function editComment(req, res, next) {
     const comment = await album.comments.id(commentId)
     comment.set(req.body)
     const albumWithDeletedCommented = await album.save()
-    res.status(200).json(albumWithDeletedCommented)
+    res.status(200).json(albumWithDeletedCommented.comments)
   } catch (err) {
     next(err)
   }
 }
+
 //! delete a comment to songs
 async function removeComment(req, res, next) {
   try {
@@ -165,9 +171,9 @@ async function removeComment(req, res, next) {
       res.send(404).json({ error: { message: 'Album not found' } })
     }
     const comment = album.comments.id(commentId)
-    comment.remove()
+    await comment.remove()
     const albumWithCommentRemoved = await album.save()
-    res.status(200).json(albumWithCommentRemoved)
+    res.status(200).json(albumWithCommentRemoved.comments)
   } catch (err) {
     next(err)
   }
