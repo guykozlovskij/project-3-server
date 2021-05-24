@@ -1,4 +1,5 @@
 @id = 60aba8525ec6d658f7f5f94b
+@commentId = 60abba5f762458633f1c879a
 
 //All songs index.
 GET http://localhost:4000/api/songs
@@ -49,3 +50,19 @@ content-type: application/json
 {
   "text": "new comment here"
 }
+
+
+###
+//Update Comment 
+PUT http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+content-type: application/json
+
+{
+  "text": "THE COMMENT HAS BEEN UPDATED"
+}
+
+
+###
+//Delete comment 
+DELETE PUT http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+

@@ -1,6 +1,5 @@
 import Song from '../models/songModel.js'
 import { NotFound } from '../lib/errors.js'
-import { NotValid } from '../lib/errors.js'
 
 import Artist from '../models/artistModel.js'
 import Album from '../models/albumModel.js'
@@ -132,10 +131,31 @@ async function createComment(req, res, next) {
 
 
 //! edit a comment to songs
+async function editComment(req, res, next) {
+  try {
+    const { commentId } = req.params
+    const song = await Song.findById(req.params.id)
 
+    if (!song) {
+      throw new NotFound('No song found.')
+    }
+    const comment = song.comments.id(commentId)
+
+    comment.set(req.body)
+    const savedSong = await song.save()
+    res.send(savedSong)
+
+  } catch (e) {
+    next(e)
+  }
+}
 
 
 //! delete a comment to songs
+async function deleteComment(req, res, next) {
+
+}
+
 
 
 export default {
@@ -146,5 +166,6 @@ export default {
   removeSong,
   editSong,
   createComment,
-
+  editComment,
+  deleteComment,
 }

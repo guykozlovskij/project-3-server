@@ -27,10 +27,16 @@ router.route('/songs/:id')
   .delete(songController.removeSong)
   .put(songController.editSong)
 
+
+
 //! Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
   .post(songController.createComment)
+
+router.route('/songs/:id/comments/:commentId')
+  .put(songController.editComment)
+  .delete(songController.deleteComment)
 
 
 
