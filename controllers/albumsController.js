@@ -1,13 +1,12 @@
 //! Get all albums
 import Album from '../models/albumModel.js'
 import User from '../models/userModel.js'
-import Song from '../models/songModel.js'
-import Artist from '../models/artistModel.js'
+
 
 //! get a particular album
 async function albumIndex(req, res, next) {
   try {
-    const album = await Album.find()
+    const album = await Album.find().populate('artists')
     res.status(200).json(album)
   } catch (err) {
     next(err)
@@ -18,7 +17,9 @@ async function albumIndex(req, res, next) {
 async function album(req, res, next) {
   try {
     const { albumId } = req.params
-    const album = await Album.findById(albumId).populate('songs').populate('artists')
+    const album = await Album.findById(albumId)
+      .populate('songs')
+      .populate('artists')
     if (!album) {
       res.status(404).json({ error: { message: 'Album not found' } })
     }
@@ -28,7 +29,7 @@ async function album(req, res, next) {
   }
 }
 
-//! Get all comments for this particular album 
+//! Get all comments for this particular album
 async function comments(req, res, next) {
   try {
     const { albumId } = req.params
@@ -58,7 +59,7 @@ async function add(req, res, next) {
 async function edit(req, res, next) {
   try {
     const { albumId } = req.params
-    const album = await Album.updateOne({ '_id': albumId }, req.body)
+    const album = await Album.updateOne({ _id: albumId }, req.body)
     if (album.n < 1) {
       res.status(404).json({ error: { message: 'Not found' } })
     }
@@ -75,7 +76,7 @@ async function edit(req, res, next) {
 async function remove(req, res, next) {
   try {
     const { albumId } = req.params
-    await Album.deleteOne({ '_id': albumId })
+    await Album.deleteOne({ _id: albumId })
     res.sendStatus(202)
   } catch (err) {
     next(err)
@@ -118,7 +119,7 @@ async function removeSong(req, res, next) {
     if (!album) {
       res.status(404).json({ error: { message: 'Album not found' } })
     }
-    const song = album.songs.findIndex(song => song.equals(songId))
+    const song = album.songs.findIndex((song) => song.equals(songId))
     if (song === -1) {
       return res.status(404).json('Not found')
     }
@@ -181,7 +182,6 @@ async function removeComment(req, res, next) {
     next(err)
   }
 }
-
 
 export default {
   albumIndex,
