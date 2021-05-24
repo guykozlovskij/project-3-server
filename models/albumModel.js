@@ -7,7 +7,7 @@ const albumSchema = new mongoose.Schema({
   year: { type: Date, required: true },
   lenght: { type: Number, required: true },
   songs: [{ type: mongoose.Schema.ObjectId, ref: 'Song', required: true }],
-  user: { type: mongoose.Schema.ObjectId, ref: 'User', required: true }
+  user: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
 })
 
 export default mongoose.model('Album', albumSchema)
