@@ -155,7 +155,7 @@ async function editComment(req, res, next) {
     }
     const comment = song.comments.id(commentId)
 
-    if (!req.currentUser._id.equals(comment.user)) {
+    if (!req.currentUser._id.equals(comment.username)) {
       return res.status(401).send({ message: 'Unauthorized' })
     }
 
@@ -181,6 +181,10 @@ async function deleteComment(req, res, next) {
     }
     if (!comment) {
       throw new NotFound('No coment found.')
+    }
+
+    if (!req.currentUser._id.equals(comment.username)) {
+      return res.status(401).send({ message: 'Unauthorized' })
     }
 
     await comment.remove()

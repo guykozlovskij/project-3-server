@@ -37,7 +37,7 @@ router.route('/songs/:id/comments')
 
 router.route('/songs/:id/comments/:commentId')
   .put(secureRoute, songController.editComment)
-  .delete(songController.deleteComment)
+  .delete(secureRoute, songController.deleteComment)
 
 
 

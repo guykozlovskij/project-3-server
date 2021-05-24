@@ -1,7 +1,7 @@
-@id = 60abc740637a886a79b76fc9
-@commentId = 60abc759637a886a79b76fca
+@id = 60aba3750aadd753362dfe7c
+@commentId = 60aba3750aadd753362dfe7d
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYmYwZDczZGY1NzY2ODAxYzQ4YmIiLCJpYXQiOjE2MjE4NzAxMTcsImV4cCI6MTYyMTkxMzMxN30.er0CM8t_TbSEv56q_tMc1h6P0WY3Sn1dsnEz8_Fi1Vo
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYTM3NDBhYWRkNzUzMzYyZGZlNzUiLCJpYXQiOjE2MjE4NzE3ODUsImV4cCI6MTYyMTkxNDk4NX0.ppXaaSbzEg57ARW9P2CZPKjQeuZQxcgA_vxF0JepG-Q
 
 
 //All songs index.
@@ -55,7 +55,7 @@ Authorization: Bearer {{token}}
 content-type: application/json
 
 {
-  "text": "new comment here"
+  "text": "NEW to be updated"
 }
 
 
@@ -73,4 +73,5 @@ content-type: application/json
 ###
 //Delete comment 
 DELETE http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
 
