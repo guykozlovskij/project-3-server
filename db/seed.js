@@ -67,13 +67,21 @@ async function seedDatabase() {
     console.log(`${songs.length} songs have been added`)
     // console.log(songs)
     // add song to the users addedSongs
+    //! adding the song to an album
+    const albumToAddSongTo = await Album.findById(albums[0]._id)
+    songs.map(song => {
+      albumToAddSongTo.songs.push(song._id)
+    })
+    const albumWithAddedSongs = await albumToAddSongTo.save()
+    console.log(albumWithAddedSongs)
     //! adding song to user addedSongs
 
     const userWithSong = await User.findById(users[0]._id)
-    userWithSong.addedSongs.push(songs[0])
+    songs.map(song => {
+      userWithSong.addedSongs.push(song._id)
+    })
     const userWithAddedSong = await userWithSong.save()
 
-    // console.log(songs[0])
     console.log(userWithAddedSong)
 
     console.log('Songs added to users addedSongs')
