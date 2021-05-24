@@ -39,3 +39,13 @@ content-type: application/json
   "name": "This song is from future and edited",
   "year": "2029"
 }
+
+
+###
+//Create Comment for a song 
+POST  http://localhost:4000/api/songs/{{id}}/comments
+content-type: application/json
+
+{
+  "text": "new comment here"
+}

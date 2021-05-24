@@ -3,7 +3,8 @@ import { NotFound } from '../lib/errors.js'
 import { NotValid } from '../lib/errors.js'
 
 import Artist from '../models/artistModel.js'
-import Ablum from '../models/albumModel.js'
+import Album from '../models/albumModel.js'
+import User from '../models/userModel.js'
 
 
 //! GET all songs
@@ -106,24 +107,33 @@ async function editSong(req, res, next) {
 }
 
 
-// ! add a comment to songs
-// async function createComment(req, res, next) {
-//   try {
-//     //* Get Song to comment on
-//     const song = await Song.find
-//       .populate('user')
-//       .populate('comments.user')
+//! add a comment to songs
+async function createComment(req, res, next) {
+  try {
+    const user = await User.find()
+    req.body.username = user[0]
 
-//     //* Push comment to song
+    //* Get Song to comment on
+    const song = await Song.findById(req.params.id)
+      .populate('user')
+      .populate('comments.user')
 
+    //* Push comment to song
+    song.comments.push(req.body)
 
-//     //* Save and update song
-//   } catch (e) {
-//     next(e)
-//   }
-// }
+    //* Save and update song
+    const savedSong = await song.save()
+    res.send(savedSong)
+
+  } catch (e) {
+    next(e)
+  }
+}
+
 
 //! edit a comment to songs
+
+
 
 //! delete a comment to songs
 
@@ -135,6 +145,6 @@ export default {
   uploadSong,
   removeSong,
   editSong,
-  // createComment,
+  createComment,
 
 }

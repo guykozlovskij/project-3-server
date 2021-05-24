@@ -30,8 +30,7 @@ router.route('/songs/:id')
 //! Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
-  
-
+  .post(songController.createComment)
 
 
 
