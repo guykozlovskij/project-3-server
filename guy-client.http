@@ -1,0 +1,41 @@
+@id = 60aba8525ec6d658f7f5f94b
+
+//All songs index.
+GET http://localhost:4000/api/songs
+
+
+###
+//Get a single song.
+GET http://localhost:4000/api/songs/{{id}}/
+
+
+###
+//Get all comments for a song.
+GET http://localhost:4000/api/songs/{{id}}/comments
+
+
+###
+//Upload a song
+POST http://localhost:4000/api/songs/
+content-type: application/json
+
+{
+  "name": "Awesome New Song",
+  "year": "2021"
+}
+
+
+###
+//Delete a song
+DELETE http://localhost:4000/api/songs/{{id}}/
+
+
+###
+//Edit Song
+PUT http://localhost:4000/api/songs/{{id}}/
+content-type: application/json
+
+{
+  "name": "This song is from future and edited",
+  "year": "2029"
+}
