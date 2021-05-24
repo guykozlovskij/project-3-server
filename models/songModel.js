@@ -1,5 +1,7 @@
 import mongoose from 'mongoose'
 
+import commentSchema from './commentSchema.js'
+
 const songSchema = new mongoose.Schema({
   name: { type: String, required: true },
   leadArtist: { type: mongoose.Schema.ObjectId, ref: 'Artist', required: true },
@@ -8,7 +10,7 @@ const songSchema = new mongoose.Schema({
   audioSrc: { type: String },
   album: { type: mongoose.Schema.ObjectId, ref: 'Album' },
   artists: [{ type: mongoose.Schema.ObjectId, ref: 'Artist' }],
-  comments: [{ type: mongoose.Schema.ObjectId, ref: 'Comment' }],
+  comments: [commentSchema],
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
 })
 
