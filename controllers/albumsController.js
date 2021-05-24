@@ -114,12 +114,15 @@ async function addSong(req, res, next) {
 async function removeSong(req, res, next) {
   try {
     const { albumId, songId } = req.params
-    const album = await Album.findById(albumId)
+    const album = await Album.findById(albumId).populate('songs')
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      res.status(404).json({ error: { message: 'Album not found' } })
     }
-    const song = album.songs.id(songId)
-    song.remove()
+    const song = album.songs.findIndex(song => song.equals(songId))
+    if (song === -1) {
+      return res.status(404).json('Not found')
+    }
+    album.songs.splice(song, 1)
     const albumWithDeletedSong = await album.save()
     res.status(200).json(albumWithDeletedSong.songs)
   } catch (err) {
@@ -168,7 +171,7 @@ async function removeComment(req, res, next) {
     const { albumId, commentId } = req.params
     const album = await Album.findById(albumId)
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      res.status(404).json({ error: { message: 'Album not found' } })
     }
     const comment = album.comments.id(commentId)
     await comment.remove()
