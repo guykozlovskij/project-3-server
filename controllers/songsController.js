@@ -12,6 +12,7 @@ async function songsIndex(req, res, next) {
     const songList = await Song.find()
       .populate('leadArtist')
       .populate('album')
+      .populate('artists')
     res.status(200).json(songList)
   } catch (e) {
     next(e)
