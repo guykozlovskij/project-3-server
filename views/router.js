@@ -1,5 +1,7 @@
 import express from 'express'
 import userController from '../controllers/usersController.js'
+import songController from '../controllers/songsController.js'
+
 // import secureRoute from '../middleware/secureRoute.js'
 
 
@@ -15,5 +17,23 @@ router.route('/login')
 router.route('/playlist/:id/')
 
 
+//! Songs routes
+router.route('/songs/')
+  .get(songController.songsIndex)
+  .post(songController.uploadSong)
+
+router.route('/songs/:id')
+  .get(songController.showSingleSong)
+  .delete(songController.removeSong)
+  .put(songController.editSong)
+
+//! Comment Routes
+router.route('/songs/:id/comments')
+  .get(songController.getCommentsForSong)
+  
+
+
+
 
 export default router
+
