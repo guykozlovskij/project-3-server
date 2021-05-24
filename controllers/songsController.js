@@ -153,7 +153,26 @@ async function editComment(req, res, next) {
 
 //! delete a comment to songs
 async function deleteComment(req, res, next) {
+  try {
+    const { commentId } = req.params
+    const song = await Song.findById(req.params.id)
+    const comment = song.comments.id(commentId)
 
+    if (!song) {
+      throw new NotFound('No song found.')
+    }
+    if (!comment) {
+      throw new NotFound('No coment found.')
+    }
+
+    await comment.remove()
+    comment.set(req.body)
+    const savedSong = await song.save()
+    res.send(savedSong)
+
+  } catch (e) {
+    next(e)
+  }
 }
 
 

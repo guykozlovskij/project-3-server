@@ -1,5 +1,5 @@
 @id = 60aba8525ec6d658f7f5f94b
-@commentId = 60abba5f762458633f1c879a
+@commentId = 60abb5487f4e1660ea840c5b
 
 //All songs index.
 GET http://localhost:4000/api/songs
@@ -64,5 +64,5 @@ content-type: application/json
 
 ###
 //Delete comment 
-DELETE PUT http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+DELETE http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
 
