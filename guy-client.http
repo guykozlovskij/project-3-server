@@ -1,5 +1,8 @@
-@id = 60aba8525ec6d658f7f5f94b
+@id = 60abc40101f5996904fc4ba7
 @commentId = 60abb5487f4e1660ea840c5b
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYmYwZDczZGY1NzY2ODAxYzQ4YmIiLCJpYXQiOjE2MjE4Njg2NTMsImV4cCI6MTYyMTkxMTg1M30.7CNwQVcorkwzHw521W1g4NwklvCvF1N2dfVrEisayNU
+
 
 //All songs index.
 GET http://localhost:4000/api/songs
@@ -18,6 +21,7 @@ GET http://localhost:4000/api/songs/{{id}}/comments
 ###
 //Upload a song
 POST http://localhost:4000/api/songs/
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
@@ -29,11 +33,13 @@ content-type: application/json
 ###
 //Delete a song
 DELETE http://localhost:4000/api/songs/{{id}}/
+Authorization: Bearer {{token}}
 
 
 ###
 //Edit Song
 PUT http://localhost:4000/api/songs/{{id}}/
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {

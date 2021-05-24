@@ -54,7 +54,7 @@ async function getCommentsForSong(req, res, next) {
 async function uploadSong(req, res, next) {
   const artist = await Artist.find()
   req.body.leadArtist = artist[0]
-
+  req.body.user = req.currentUser
   //!-------
   //TODO - update lead artist
   //!-------
@@ -72,7 +72,13 @@ async function uploadSong(req, res, next) {
 //! DELETE song
 async function removeSong(req, res, next) {
   try {
+    const currentUserId = req.currentUser._id
     const song = await Song.findById(req.params.id)
+
+    if (!currentUserId.equals(song.user)) {
+
+      throw new NotFound('This hymn does not belong to you')
+    }
 
     if (!song) {
       throw new NotFound('No song found.')
@@ -90,10 +96,16 @@ async function removeSong(req, res, next) {
 //! Edit (PUT) Song
 async function editSong(req, res, next) {
   try {
+    const currentUserId = req.currentUser._id
     const song = await Song.findById(req.params.id)
 
     if (!song) {
       throw new NotFound('No song found.')
+    }
+
+    if (!currentUserId.equals(song.user)) {
+
+      throw new NotFound('This song does not belong to you')
     }
 
     song.set(req.body)
