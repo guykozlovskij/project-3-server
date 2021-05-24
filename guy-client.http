@@ -1,4 +1,8 @@
-@id = 60aba8525ec6d658f7f5f94b
+@id = 60aba3750aadd753362dfe7c
+@commentId = 60aba3750aadd753362dfe7d
+
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYTM3NDBhYWRkNzUzMzYyZGZlNzUiLCJpYXQiOjE2MjE4NzE3ODUsImV4cCI6MTYyMTkxNDk4NX0.ppXaaSbzEg57ARW9P2CZPKjQeuZQxcgA_vxF0JepG-Q
+
 
 //All songs index.
 GET http://localhost:4000/api/songs
@@ -17,6 +21,7 @@ GET http://localhost:4000/api/songs/{{id}}/comments
 ###
 //Upload a song
 POST http://localhost:4000/api/songs/
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
@@ -28,14 +33,45 @@ content-type: application/json
 ###
 //Delete a song
 DELETE http://localhost:4000/api/songs/{{id}}/
+Authorization: Bearer {{token}}
 
 
 ###
 //Edit Song
 PUT http://localhost:4000/api/songs/{{id}}/
+Authorization: Bearer {{token}}  
 content-type: application/json
 
 {
   "name": "This song is from future and edited",
   "year": "2029"
 }
+
+
+###
+//Create Comment for a song 
+POST  http://localhost:4000/api/songs/{{id}}/comments
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "text": "NEW to be updated"
+}
+
+
+###
+//Update Comment 
+PUT http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "text": "THE COMMENT HAS BEEN UPDATED"
+}
+
+
+###
+//Delete comment 
+DELETE http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
+

@@ -2,6 +2,7 @@ import express from 'express'
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
+import secureRoute from '../middleware/secureRoute.js'
 
 // import secureRoute from '../middleware/secureRoute.js'
 
@@ -47,18 +48,24 @@ router.route('/albums/:albumId/comments/:commentId')
 //! Songs routes
 router.route('/songs/')
   .get(songController.songsIndex)
-  .post(songController.uploadSong)
+  .post(secureRoute, songController.uploadSong)
 
 router.route('/songs/:id')
   .get(songController.showSingleSong)
-  .delete(songController.removeSong)
-  .put(songController.editSong)
+  .delete(secureRoute, songController.removeSong)
+  .put(secureRoute, songController.editSong)
+
+
 
 //! Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
+  .post(secureRoute, songController.createComment)
 
 
+router.route('/songs/:id/comments/:commentId')
+  .put(secureRoute, songController.editComment)
+  .delete(secureRoute, songController.deleteComment)
 
 
 

@@ -1,9 +1,9 @@
 import Song from '../models/songModel.js'
 import { NotFound } from '../lib/errors.js'
-import { NotValid } from '../lib/errors.js'
 
 import Artist from '../models/artistModel.js'
-import Ablum from '../models/albumModel.js'
+import Album from '../models/albumModel.js'
+import User from '../models/userModel.js'
 
 
 //! GET all songs
@@ -55,7 +55,7 @@ async function getCommentsForSong(req, res, next) {
 async function uploadSong(req, res, next) {
   const artist = await Artist.find()
   req.body.leadArtist = artist[0]
-
+  req.body.user = req.currentUser
   //!-------
   //TODO - update lead artist
   //!-------
@@ -73,7 +73,13 @@ async function uploadSong(req, res, next) {
 //! DELETE song
 async function removeSong(req, res, next) {
   try {
+    const currentUserId = req.currentUser._id
     const song = await Song.findById(req.params.id)
+
+    if (!currentUserId.equals(song.user)) {
+
+      throw new NotFound('This hymn does not belong to you')
+    }
 
     if (!song) {
       throw new NotFound('No song found.')
@@ -91,10 +97,16 @@ async function removeSong(req, res, next) {
 //! Edit (PUT) Song
 async function editSong(req, res, next) {
   try {
+    const currentUserId = req.currentUser._id
     const song = await Song.findById(req.params.id)
 
     if (!song) {
       throw new NotFound('No song found.')
+    }
+
+    if (!currentUserId.equals(song.user)) {
+
+      throw new NotFound('This song does not belong to you')
     }
 
     song.set(req.body)
@@ -107,26 +119,85 @@ async function editSong(req, res, next) {
 }
 
 
-// ! add a comment to songs
-// async function createComment(req, res, next) {
-//   try {
-//     //* Get Song to comment on
-//     const song = await Song.find
-//       .populate('user')
-//       .populate('comments.user')
+//! add a comment to songs
+async function createComment(req, res, next) {
+  req.body.user = req.currentUser
 
-//     //* Push comment to song
+  try {
+    const user = await User.find()
+    req.body.username = user[0]
 
+    //* Get Song to comment on
+    const song = await Song.findById(req.params.id)
+      .populate('user')
+      .populate('comments.user')
 
-//     //* Save and update song
-//   } catch (e) {
-//     next(e)
-//   }
-// }
+    //* Push comment to song
+    song.comments.push(req.body)
+
+    //* Save and update song
+    const savedSong = await song.save()
+    res.send(savedSong)
+
+  } catch (e) {
+    next(e)
+  }
+}
+
 
 //! edit a comment to songs
+async function editComment(req, res, next) {
+  try {
+    const { commentId } = req.params
+    const song = await Song.findById(req.params.id)
+
+    if (!song) {
+      throw new NotFound('No song found.')
+    }
+    const comment = song.comments.id(commentId)
+
+    if (!req.currentUser._id.equals(comment.username)) {
+      return res.status(401).send({ message: 'Unauthorized' })
+    }
+
+    comment.set(req.body)
+    const savedSong = await song.save()
+    res.send(savedSong)
+
+  } catch (e) {
+    next(e)
+  }
+}
+
 
 //! delete a comment to songs
+async function deleteComment(req, res, next) {
+  try {
+    const { commentId } = req.params
+    const song = await Song.findById(req.params.id)
+    const comment = song.comments.id(commentId)
+
+    if (!song) {
+      throw new NotFound('No song found.')
+    }
+    if (!comment) {
+      throw new NotFound('No coment found.')
+    }
+
+    if (!req.currentUser._id.equals(comment.username)) {
+      return res.status(401).send({ message: 'Unauthorized' })
+    }
+
+    await comment.remove()
+    comment.set(req.body)
+    const savedSong = await song.save()
+    res.send(savedSong)
+
+  } catch (e) {
+    next(e)
+  }
+}
+
 
 
 export default {
@@ -136,6 +207,7 @@ export default {
   uploadSong,
   removeSong,
   editSong,
-  // createComment,
-
+  createComment,
+  editComment,
+  deleteComment,
 }
