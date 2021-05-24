@@ -14,7 +14,7 @@ import User from '../models/userModel.js'
 import Artist from '../models/artistModel.js'
 import Album from '../models/albumModel.js'
 import Song from '../models/songModel.js'
-
+import Playlist from '../models/playlistModel.js'
 
 import usersData from './data/userData.js'
 import artistData from './data/artistData.js'
@@ -77,7 +77,16 @@ async function seedDatabase() {
     console.log(`${songs.length} songs have been added`)
 
     // console.log(songs)
-    // add song to the users addedSongs
+
+    //! create a playlist and add songs to it
+    const playlist = await Playlist.create({
+      name: 'playlist 1',
+      text: 'the best of the best',
+      songs: songs,
+      users: users[0],
+      type: 'public'
+    })
+    console.log(playlist)
     //! adding the song to an album
     const albumToAddSongTo = await Album.findById(albums[0]._id)
     songs.map(song => {
@@ -85,10 +94,14 @@ async function seedDatabase() {
       albumToAddSongTo.comments.push(commentToAdd)
     })
     const albumWithAddedSongs = await albumToAddSongTo.save()
-    console.log(albumWithAddedSongs)
+
+    // console.log(albumWithAddedSongs)
+
     //! adding songs to artist 
     const artistToAddSongsTo = await Artist.findById(artists[0]._id)
-    console.log(artistToAddSongsTo)
+
+    // console.log(artistToAddSongsTo)
+
     songs.map(song => {
       artistToAddSongsTo.songs.push(song._id)
       artistToAddSongsTo.comments.push(commentToAdd)
@@ -106,7 +119,7 @@ async function seedDatabase() {
     })
     const userWithAddedSong = await userWithSong.save()
 
-    console.log(userWithAddedSong)
+    // console.log(userWithAddedSong)
 
     console.log('Songs added to users addedSongs')
 

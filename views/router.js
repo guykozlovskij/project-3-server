@@ -12,5 +12,8 @@ router.route('/login')
   .post(userController.login)
 
 
+router.route('/playlist/:id/')
+
+
 
 export default router
