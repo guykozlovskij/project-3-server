@@ -2,7 +2,6 @@ import Song from '../models/songModel.js'
 import { NotFound } from '../lib/errors.js'
 
 import Artist from '../models/artistModel.js'
-import Album from '../models/albumModel.js'
 import User from '../models/userModel.js'
 
 
