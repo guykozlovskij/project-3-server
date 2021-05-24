@@ -120,6 +120,8 @@ async function editSong(req, res, next) {
 
 //! add a comment to songs
 async function createComment(req, res, next) {
+  req.body.user = req.currentUser
+
   try {
     const user = await User.find()
     req.body.username = user[0]
@@ -152,6 +154,10 @@ async function editComment(req, res, next) {
       throw new NotFound('No song found.')
     }
     const comment = song.comments.id(commentId)
+
+    if (!req.currentUser._id.equals(comment.user)) {
+      return res.status(401).send({ message: 'Unauthorized' })
+    }
 
     comment.set(req.body)
     const savedSong = await song.save()

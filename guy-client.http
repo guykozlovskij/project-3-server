@@ -1,7 +1,7 @@
-@id = 60abc40101f5996904fc4ba7
-@commentId = 60abb5487f4e1660ea840c5b
+@id = 60abc740637a886a79b76fc9
+@commentId = 60abc759637a886a79b76fca
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYmYwZDczZGY1NzY2ODAxYzQ4YmIiLCJpYXQiOjE2MjE4Njg2NTMsImV4cCI6MTYyMTkxMTg1M30.7CNwQVcorkwzHw521W1g4NwklvCvF1N2dfVrEisayNU
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYmYwZDczZGY1NzY2ODAxYzQ4YmIiLCJpYXQiOjE2MjE4NzAxMTcsImV4cCI6MTYyMTkxMzMxN30.er0CM8t_TbSEv56q_tMc1h6P0WY3Sn1dsnEz8_Fi1Vo
 
 
 //All songs index.
@@ -39,7 +39,7 @@ Authorization: Bearer {{token}}
 ###
 //Edit Song
 PUT http://localhost:4000/api/songs/{{id}}/
-Authorization: Bearer {{token}}
+Authorization: Bearer {{token}}  
 content-type: application/json
 
 {
@@ -51,6 +51,7 @@ content-type: application/json
 ###
 //Create Comment for a song 
 POST  http://localhost:4000/api/songs/{{id}}/comments
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {
@@ -61,6 +62,7 @@ content-type: application/json
 ###
 //Update Comment 
 PUT http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
 content-type: application/json
 
 {

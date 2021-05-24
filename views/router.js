@@ -33,10 +33,10 @@ router.route('/songs/:id')
 //! Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
-  .post(songController.createComment)
+  .post(secureRoute, songController.createComment)
 
 router.route('/songs/:id/comments/:commentId')
-  .put(songController.editComment)
+  .put(secureRoute, songController.editComment)
   .delete(songController.deleteComment)
 
 
