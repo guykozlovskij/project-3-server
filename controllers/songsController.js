@@ -10,6 +10,7 @@ import Ablum from '../models/albumModel.js'
 async function songsIndex(req, res, next) {
   try {
     const songList = await Song.find()
+      .populate('leadArtist')
     res.status(200).json(songList)
   } catch (e) {
     next(e)
