@@ -74,5 +74,6 @@ router.route('/playlist')
 
 router.route('/playlist/:playlistId')
   .get(playlistsController.playlist)
+  
 export default router
 

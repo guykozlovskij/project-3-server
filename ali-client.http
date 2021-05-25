@@ -68,6 +68,9 @@ Authorization: Bearer {{token}}
 GET http://localhost:4000/api/albums/{{albumId}}/songs
 
 ###
+POST http://localhost:4000/api/albums/{{albumId}}/songs
+
+###
 DELETE http://localhost:4000/api/albums/{{albumId}}/songs/{{songId}}
 Authorization: Bearer {{token}}
 
@@ -85,5 +88,5 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  
+  "name": "MyPlaylist 1"
 }
