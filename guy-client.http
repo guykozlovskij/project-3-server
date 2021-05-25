@@ -1,8 +1,13 @@
 @id = 60aba3750aadd753362dfe7c
 @commentId = 60aba3750aadd753362dfe7d
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYTM3NDBhYWRkNzUzMzYyZGZlNzUiLCJpYXQiOjE2MjE4NzE3ODUsImV4cCI6MTYyMTkxNDk4NX0.ppXaaSbzEg57ARW9P2CZPKjQeuZQxcgA_vxF0JepG-Q
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYTM3NDBhYWRkNzUzMzYyZGZlNzUiLCJpYXQiOjE2MjE5MzMwMDksImV4cCI6MTYyMTk3NjIwOX0.rHsrz9Cv6rKdGjEq5MhWBfX8gm9PShm_rOxRMoh1txo
 
+@artistId= 60accce1b5900992d875bbe8
+
+@songId = 60aba3750aadd753362dfe7c
+
+@albumId = 60aba3750aadd753362dfe7a
 
 //All songs index.
 GET http://localhost:4000/api/songs
@@ -75,3 +80,52 @@ content-type: application/json
 DELETE http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
 Authorization: Bearer {{token}}
 
+
+//---------------------------------------------------------------------------------------------
+###
+//GET all artists
+GET http://localhost:4000/api/artists
+
+
+###
+//Get a particular artist
+GET http://localhost:4000/api/artists/{{artistId}}
+
+
+###
+//Create artist
+POST http://localhost:4000/api/artists/
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "NEWEST Artist"
+}
+
+###
+//Update artist 
+PUT http://localhost:4000/api/artists/{{artistId}}
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "UPD Artist again"
+}
+
+
+###
+//Add song to artist 
+POST http://localhost:4000/api/artists/{{artistId}}/songs/{{songId}}
+Authorization: Bearer {{token}}
+
+
+###
+//Add album to artist 
+POST http://localhost:4000/api/artists/{{artistId}}/albums/{{albumId}}
+Authorization: Bearer {{token}}
+
+
+###
+//DELETE artist
+DELETE http://localhost:4000/api/artists/{{artistId}}
+Authorization: Bearer {{token}}

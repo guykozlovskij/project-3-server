@@ -5,6 +5,9 @@ import secureRoute from '../middleware/secureRoute.js'
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
+import artistsController from '../controllers/artistsController.js'
+
+
 import playlistsController from '../controllers/playlistsController.js'
 
 
@@ -57,7 +60,7 @@ router.route('/songs/:id')
 
 
 
-//! Comment Routes
+//* Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
   .post(secureRoute, songController.createComment)
@@ -71,6 +74,23 @@ router.route('/songs/:id/comments/:commentId')
 router.route('/playlist')
   .get(playlistsController.playlistIndex)
   .post(secureRoute, playlistsController.add)
+
+//! Artist routes
+router.route('/artists/')
+  .get(artistsController.artistIndex)
+  .post(secureRoute, artistsController.createArtist)
+
+router.route('/artists/:artistId')
+  .get(artistsController.artist)
+  .put(secureRoute, artistsController.editArtist)
+  .delete(secureRoute, artistsController.removeArtist)
+
+router.route('/artists/:artistId/songs/:songId')
+  .post(secureRoute, artistsController.addSongToArtist)
+
+router.route('/artists/:artistId/albums/:albumId')
+  .post(secureRoute, artistsController.addAlbumToArtist)
+
 
 router.route('/playlist/:playlistId')
   .get(playlistsController.playlist)
