@@ -4,17 +4,15 @@ import { NotFound } from '../lib/errors.js'
 import Artist from '../models/artistModel.js'
 import User from '../models/userModel.js'
 
-
 //! GET all songs
 async function songsIndex(req, res, next) {
   try {
-    const songList = await Song.find()
+    const songList = await Song.find().populate('leadArtist')
     res.status(200).json(songList)
   } catch (e) {
     next(e)
   }
 }
-
 
 //! GET a particular song
 async function showSingleSong(req, res, next) {
@@ -27,12 +25,12 @@ async function showSingleSong(req, res, next) {
 
     if (!song) {
       throw new NotFound('No song found!')
-    } res.status(200).json(song)
+    }
+    res.status(200).json(song)
   } catch (e) {
     next(e)
   }
 }
-
 
 //! GET all comments for a particular song
 async function getCommentsForSong(req, res, next) {
@@ -42,12 +40,12 @@ async function getCommentsForSong(req, res, next) {
 
     if (!commentsOfSong) {
       throw new NotFound('No comment found!')
-    } res.status(200).json(commentsOfSong.comments)
+    }
+    res.status(200).json(commentsOfSong.comments)
   } catch (e) {
     next(e)
   }
 }
-
 
 //! POST a song
 async function uploadSong(req, res, next) {
@@ -61,12 +59,10 @@ async function uploadSong(req, res, next) {
   try {
     const newSong = await Song.create(req.body)
     res.status(201).json(newSong)
-
   } catch (e) {
     next(e)
   }
 }
-
 
 //! DELETE song
 async function removeSong(req, res, next) {
@@ -75,7 +71,6 @@ async function removeSong(req, res, next) {
     const song = await Song.findById(req.params.id)
 
     if (!currentUserId.equals(song.user)) {
-
       throw new NotFound('This song does not belong to you')
     }
 
@@ -85,12 +80,10 @@ async function removeSong(req, res, next) {
 
     await song.deleteOne()
     res.sendStatus(204)
-
   } catch (e) {
     next(e)
   }
 }
-
 
 //! Edit (PUT) Song
 async function editSong(req, res, next) {
@@ -103,19 +96,16 @@ async function editSong(req, res, next) {
     }
 
     if (!currentUserId.equals(song.user)) {
-
       throw new NotFound('This song does not belong to you')
     }
 
     song.set(req.body)
     song.save()
     res.status(202).json(song)
-
   } catch (e) {
     next(e)
   }
 }
-
 
 //! add a comment to songs
 async function createComment(req, res, next) {
@@ -136,12 +126,10 @@ async function createComment(req, res, next) {
     //* Save and update song
     const savedSong = await song.save()
     res.send(savedSong)
-
   } catch (e) {
     next(e)
   }
 }
-
 
 //! edit a comment to songs
 async function editComment(req, res, next) {
@@ -161,12 +149,10 @@ async function editComment(req, res, next) {
     comment.set(req.body)
     const savedSong = await song.save()
     res.send(savedSong)
-
   } catch (e) {
     next(e)
   }
 }
-
 
 //! delete a comment to songs
 async function deleteComment(req, res, next) {
@@ -190,13 +176,10 @@ async function deleteComment(req, res, next) {
     comment.set(req.body)
     const savedSong = await song.save()
     res.send(savedSong)
-
   } catch (e) {
     next(e)
   }
 }
-
-
 
 export default {
   songsIndex,
