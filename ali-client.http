@@ -3,7 +3,7 @@
 
 @songId = 60acb00774d5e88524bb3eec
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFjYjAwNzc0ZDVlODg1MjRiYjNlZTUiLCJpYXQiOjE2MjE5MzA0OTksImV4cCI6MTYyMTk3MzY5OX0.vxsObUsHJ58j_m5U9p_k8fSbM-ALBo4bcs_CFTFkzvw
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFjZDIzOTc0YmFlMTIyMTVhOGMyYWIiLCJpYXQiOjE2MjE5Mzg3NDgsImV4cCI6MTYyMTk4MTk0OH0.N9Vh3903bzPDJXvuKml7rQ8zxbTt1a4TE46j0MhNuoc
 
 GET http://localhost:4000/api/albums
 
@@ -88,13 +88,22 @@ GET http://localhost:4000/api/playlist
 
 
 ###
-GET http://localhost:4000/api/playlist/60acb00874d5e88524bb3ef0
+GET http://localhost:4000/api/playlist/60acd24674bae12215a8c2ac
 
 ###
-GET http://localhost:4000/api/playlist/
+POST http://localhost:4000/api/playlist/
 Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "MyPlaylist 1"
+  "name": "MyPlaylist 55"
+}
+
+###
+PUT http://localhost:4000/api/playlist/60acca4a5040b221fb0f109a
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+{
+  "name": "MyPlaylist 56"
 }

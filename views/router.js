@@ -70,10 +70,11 @@ router.route('/songs/:id/comments/:commentId')
 //? Playlist
 router.route('/playlist')
   .get(playlistsController.playlistIndex)
-  .post(playlistsController.add)
+  .post(secureRoute, playlistsController.add)
 
 router.route('/playlist/:playlistId')
   .get(playlistsController.playlist)
-  
+  .put(secureRoute, playlistsController.edit)
+
 export default router
 
