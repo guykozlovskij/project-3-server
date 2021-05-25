@@ -70,6 +70,7 @@ router.route('/songs/:id/comments/:commentId')
 //? Playlist
 router.route('/playlist')
   .get(playlistsController.playlistIndex)
+  .post(playlistsController.add)
 
 router.route('/playlist/:playlistId')
   .get(playlistsController.playlist)
