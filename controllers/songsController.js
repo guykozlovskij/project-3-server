@@ -7,7 +7,10 @@ import User from '../models/userModel.js'
 //! GET all songs
 async function songsIndex(req, res, next) {
   try {
-    const songList = await Song.find().populate('leadArtist')
+    const songList = await Song.find()
+    .populate('leadArtist')
+    .populate('albums')
+
     res.status(200).json(songList)
   } catch (e) {
     next(e)
