@@ -7,7 +7,7 @@ import User from '../models/userModel.js'
 //! get a particular album
 async function albumIndex(req, res, next) {
   try {
-    const album = await Album.find().populate('artists')
+    const album = await Album.find()
     res.status(200).json(album)
   } catch (err) {
     next(err)
@@ -34,7 +34,7 @@ async function album(req, res, next) {
   }
 }
 
-//! Get all comments for this particular album
+//! Get all comments for this particular album 
 async function comments(req, res, next) {
   try {
     const { albumId } = req.params
@@ -86,7 +86,7 @@ async function edit(req, res, next) {
 async function remove(req, res, next) {
   try {
     const { albumId } = req.params
-    await Album.deleteOne({ _id: albumId })
+    await Album.deleteOne({ '_id': albumId })
     res.sendStatus(202)
   } catch (err) {
     next(err)
@@ -137,7 +137,7 @@ async function removeSong(req, res, next) {
     if (!req.currentUser.equals(album.user)) {
       return res.status(401).json({ error: { message: 'Unauthorized' } })
     }
-    const song = album.songs.findIndex((song) => song.equals(songId))
+    const song = album.songs.findIndex(song => song.equals(songId))
     if (song === -1) {
       return res.status(404).json('Not found')
     }
@@ -206,6 +206,7 @@ async function removeComment(req, res, next) {
     next(err)
   }
 }
+
 
 export default {
   albumIndex,
