@@ -1,9 +1,9 @@
-@albumId = 60abc7ff4b6beb66e32ab0d2
-@commentId = 60abbbe1da173f591173dce2
+@albumId = 60acb00774d5e88524bb3eea
+@commentId = 60acaa823eb0d47e5726832d
 
-@songId = 60abc8004b6beb66e32ab0d4
+@songId = 60acb00774d5e88524bb3eec
 
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYzdmZjRiNmJlYjY2ZTMyYWIwY2QiLCJpYXQiOjE2MjE4NzIwNDIsImV4cCI6MTYyMTkxNTI0Mn0.c77wnHJG_lEkV58Ab1K2YigTxZLJuhNrTW8KrrxqU2M
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFjYjAwNzc0ZDVlODg1MjRiYjNlZTUiLCJpYXQiOjE2MjE5MzA0OTksImV4cCI6MTYyMTk3MzY5OX0.vxsObUsHJ58j_m5U9p_k8fSbM-ALBo4bcs_CFTFkzvw
 
 GET http://localhost:4000/api/albums
 
@@ -17,6 +17,7 @@ GET http://localhost:4000/api/albums/{{albumId}}/comments
 ###
 POST http://localhost:4000/api/albums/{{albumId}}/comments
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
   "text": "This is my comment LOLOLO"
@@ -24,20 +25,22 @@ Content-Type: application/json
 ###
 PUT http://localhost:4000/api/albums/{{albumId}}/comments/{{commentId}}
 Content-Type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "text": "This is my comment. LOL"
+  "text": "This is my comment."
 }
 ###
 DELETE  http://localhost:4000/api/albums/{{albumId}}/comments/{{commentId}}
 Content-Type: application/json
-
+Authorization: Bearer {{token}}
 ###
 POST http://localhost:4000/api/albums
 Content-type: application/json
+Authorization: Bearer {{token}}
 
 {
-  "name": "Album5",
+  "name": "Album6",
   "year": "2010-01-01",
   "lenght": 0,
   "songs": []
@@ -59,22 +62,22 @@ Authorization: Bearer {{token}}
 ###
 DELETE  http://localhost:4000/api/albums/{{albumId}}
 Content-type: application/json
-
+Authorization: Bearer {{token}}
 
 ###
 GET http://localhost:4000/api/albums/{{albumId}}/songs
 
 ###
 DELETE http://localhost:4000/api/albums/{{albumId}}/songs/{{songId}}
-
+Authorization: Bearer {{token}}
 ### USER Register
 
 POST http://localhost:4000/api/register
 content-type: application/json
 
 {
-  "username": "testuser8",
-  "email": "testuser8@testuser",
+  "username": "aliz",
+  "email": "aliz@email",
   "password": "pass",
   "passwordConfirmation": "pass",
   "about": "Something About Me",
@@ -89,3 +92,5 @@ content-type: application/json
   "email": "user1@user",
   "password": "pass"
 }
+
+###
