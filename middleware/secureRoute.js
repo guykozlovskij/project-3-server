@@ -17,7 +17,7 @@ export default function secureRoute(req, res, next) {
     if (err) {
       return res.status(401).json({ message: 'Unauthorized' })
     }
-    
+
     const user = await User.findById(payload.userId)
 
     if (!user) {

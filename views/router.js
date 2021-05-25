@@ -1,11 +1,14 @@
 import express from 'express'
+
+import secureRoute from '../middleware/secureRoute.js'
+
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
-import secureRoute from '../middleware/secureRoute.js'
 import artistsController from '../controllers/artistsController.js'
 
-// import secureRoute from '../middleware/secureRoute.js'
+
+import playlistsController from '../controllers/playlistsController.js'
 
 
 const router = express.Router()
@@ -16,34 +19,33 @@ router.route('/register')
 router.route('/login')
   .post(userController.login)
 
-
-router.route('/playlist/:id/')
-
-
 //? Albums
+//! Album routes
 router.route('/albums')
   .get(albumsController.albumIndex)
-  .post(albumsController.add)
+  .post(secureRoute, albumsController.add)
 
 router.route('/albums/:albumId')
   .get(albumsController.album)
-  .put(albumsController.edit)
-  .delete(albumsController.remove)
+  .put(secureRoute, albumsController.edit)
+  .delete(secureRoute, albumsController.remove)
 
+//! Song routes in albums
 router.route('/albums/:albumId/songs')
   .get(albumsController.songs)
-  .post(albumsController.addSong)
 
 router.route('/albums/:albumId/songs/:songId')
-  .delete(albumsController.removeSong)
+  .post(secureRoute, albumsController.addSong)
+  .delete(secureRoute,albumsController.removeSong)
 
+//! Comment routes in albums
 router.route('/albums/:albumId/comments')
   .get(albumsController.comments)
-  .post(albumsController.addComment)
+  .post(secureRoute, albumsController.addComment)
 
 router.route('/albums/:albumId/comments/:commentId')
-  .put(albumsController.editComment)
-  .delete(albumsController.removeComment)
+  .put(secureRoute, albumsController.editComment)
+  .delete(secureRoute, albumsController.removeComment)
 
 //? Songs
 //! Songs routes
@@ -68,6 +70,10 @@ router.route('/songs/:id/comments/:commentId')
   .put(secureRoute, songController.editComment)
   .delete(secureRoute, songController.deleteComment)
 
+//? Playlist
+router.route('/playlist')
+  .get(playlistsController.playlistIndex)
+  .post(playlistsController.add)
 
 //! Artist routes
 router.route('/artists/')
@@ -86,5 +92,7 @@ router.route('/artists/:artistId/albums/:albumId')
   .post(secureRoute, artistsController.addAlbumToArtist)
 
 
+router.route('/playlist/:playlistId')
+  .get(playlistsController.playlist)
 export default router
 
