@@ -21,6 +21,10 @@ async function album(req, res, next) {
     const album = await Album.findById(albumId)
       .populate('songs')
       .populate('artists')
+
+    album.songs = await Song.find({ album: albumId })
+      .populate('leadArtist')
+      .populate('album')
     if (!album) {
       res.status(404).json({ error: { message: 'Album not found' } })
     }
@@ -93,7 +97,9 @@ async function remove(req, res, next) {
 async function songs(req, res, next) {
   try {
     const { albumId } = req.params
-    const album = await Album.findById(albumId).populate('songs')
+    const album = await Album.findById(albumId)
+      .populate('leadArtist')
+      .populate('songs')
     if (!album) {
       res.send(404).json({ error: { message: 'Album not found' } })
     }

@@ -5,12 +5,7 @@ import secureRoute from '../middleware/secureRoute.js'
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
-<<<<<<< HEAD
-
-import secureRoute from '../middleware/secureRoute.js'
-=======
 import playlistsController from '../controllers/playlistsController.js'
->>>>>>> development
 
 
 const router = express.Router()
