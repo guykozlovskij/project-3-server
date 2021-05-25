@@ -1,4 +1,5 @@
 import Playlist from '../models/playlistModel.js'
+import Song from '../models/songModel.js'
 
 //! Get all playlist
 async function playlistIndex(req, res, next) {
@@ -22,6 +23,21 @@ async function playlist(req, res, next) {
     next(err)
   }
 }
+
+//! get all songs from playlist
+async function songs(req, res, next) {
+  try {
+    const { playlistId } = req.params
+    const playlist = await Playlist.findById(playlistId).populate('songs')
+    if (!playlist) {
+      res.send(404).json({ error: { message: 'Playlist not found' } })
+    }
+    res.status(200).json(playlist.songs)
+  } catch (err) {
+    next(err)
+  }
+}
+
 //! add a playlist
 async function add(req, res, next) {
   try {
@@ -75,7 +91,10 @@ async function addSong(req, res, next) {
     const { playlistId, songId } = req.params
     const playlist = await Playlist.findById(playlistId)
     if (!playlist) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      res.send(404).json({ error: { message: 'Playlist not found' } })
+    }
+    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+      return res.status(302).json({ error: { message: 'Unauthorized' } })
     }
     const song = await Song.findById(songId)
     playlist.songs.push(song)
@@ -86,17 +105,37 @@ async function addSong(req, res, next) {
   }
 }
 
-
-
 //! delete a song from playlist
-
-//! delete user from playlist
-
+async function removeSong(req, res, next) {
+  try {
+    const { playlistId, songId } = req.params
+    const playlist = await Playlist.findById(playlistId).populate('songs')
+    if (!playlist) {
+      return res.status(404).json({ error: { message: 'Playlist not found' } })
+    }
+    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+      return res.status(302).json({ error: { message: 'Unauthorized' } })
+    }
+    const song = playlist.songs.findIndex((song) => song.equals(songId))
+    if (song === -1) {
+      return res.status(404).json('Not found')
+    }
+    playlist.songs.splice(song, 1)
+    const playlistWithDeletedSong = await playlist.save()
+    res.status(200).json(playlistWithDeletedSong.songs)
+  } catch (err) {
+    next(err)
+  }
+}
 
 
 export default {
   playlistIndex,
   playlist,
   add,
-  edit
+  edit,
+  remove,
+  songs,
+  addSong,
+  removeSong
 }

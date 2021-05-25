@@ -33,7 +33,7 @@ router.route('/albums/:albumId/songs')
 
 router.route('/albums/:albumId/songs/:songId')
   .post(secureRoute, albumsController.addSong)
-  .delete(secureRoute,albumsController.removeSong)
+  .delete(secureRoute, albumsController.removeSong)
 
 //! Comment routes in albums
 router.route('/albums/:albumId/comments')
@@ -75,6 +75,14 @@ router.route('/playlist')
 router.route('/playlist/:playlistId')
   .get(playlistsController.playlist)
   .put(secureRoute, playlistsController.edit)
+  .delete(secureRoute, playlistsController.remove)
+
+router.route('/playlist/:playlistId/songs')
+  .get(playlistsController.songs)
+
+router.route('/playlist/:playlistId/songs/:songId')
+  .post(secureRoute, playlistsController.addSong)
+  .delete(secureRoute, playlistsController.removeSong)
 
 export default router
 

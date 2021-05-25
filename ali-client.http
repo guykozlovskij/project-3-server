@@ -83,7 +83,21 @@ GET http://localhost:4000/api/playlist
 
 
 ###
-GET http://localhost:4000/api/playlist/60acd24674bae12215a8c2ac
+GET http://localhost:4000/api/playlist/60acca4a5040b221fb0f109a
+
+###
+GET http://localhost:4000/api/playlist/60acca4a5040b221fb0f109a/songs
+
+###
+POST http://localhost:4000/api/playlist/60acdaaf71e7372fcb468b0b/songs/60acca4a5040b221fb0f1098
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
+###
+DELETE  http://localhost:4000/api/playlist/60acdaaf71e7372fcb468b0b/songs/60acca4a5040b221fb0f1098
+Content-Type: application/json
+Authorization: Bearer {{token}}
+
 
 ###
 POST http://localhost:4000/api/playlist/
@@ -100,5 +114,11 @@ Content-Type: application/json
 Authorization: Bearer {{token}}
 
 {
-  "name": "MyPlaylist 56"
+  "name": "MyPlaylist 59"
 }
+
+###
+DELETE http://localhost:4000/api/playlist/60acca4a5040b221fb0f109a
+Authorization: Bearer {{token}}
+
+
