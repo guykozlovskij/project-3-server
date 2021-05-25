@@ -9,9 +9,6 @@ import User from '../models/userModel.js'
 async function songsIndex(req, res, next) {
   try {
     const songList = await Song.find()
-      .populate('leadArtist')
-      .populate('album')
-      .populate('artists')
     res.status(200).json(songList)
   } catch (e) {
     next(e)
@@ -79,7 +76,7 @@ async function removeSong(req, res, next) {
 
     if (!currentUserId.equals(song.user)) {
 
-      throw new NotFound('This hymn does not belong to you')
+      throw new NotFound('This song does not belong to you')
     }
 
     if (!song) {

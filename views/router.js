@@ -3,6 +3,7 @@ import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
 import secureRoute from '../middleware/secureRoute.js'
+import artistsController from '../controllers/artistsController.js'
 
 // import secureRoute from '../middleware/secureRoute.js'
 
@@ -57,7 +58,7 @@ router.route('/songs/:id')
 
 
 
-//! Comment Routes
+//* Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
   .post(secureRoute, songController.createComment)
@@ -67,6 +68,22 @@ router.route('/songs/:id/comments/:commentId')
   .put(secureRoute, songController.editComment)
   .delete(secureRoute, songController.deleteComment)
 
+
+//! Artist routes
+router.route('/artists/')
+  .get(artistsController.artistIndex)
+  .post(secureRoute, artistsController.createArtist)
+
+router.route('/artists/:artistId')
+  .get(artistsController.artist)
+  .put(secureRoute, artistsController.editArtist)
+  .delete(secureRoute, artistsController.removeArtist)
+
+router.route('/artists/:artistId/songs/:songId')
+  .post(secureRoute, artistsController.addSongToArtist)
+
+router.route('/artists/:artistId/albums/:albumId')
+  .post(secureRoute, artistsController.addAlbumToArtist)
 
 
 export default router
