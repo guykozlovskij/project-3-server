@@ -59,7 +59,7 @@ async function seedDatabase() {
     // console.log(albums)
     const commentToAdd = {
       username: users[0]._id,
-      text: 'This is my comment.'
+      text: 'A great song, indeed.'
     }
     //! SONGS 
     const songsWithUser = songData.map(song => {
@@ -67,7 +67,6 @@ async function seedDatabase() {
         ...song,
         user: users[0]._id,
         leadArtist: artists[0],
-        artists: artists,
         album: albums[0],
         comments: commentToAdd
       }
@@ -80,12 +79,23 @@ async function seedDatabase() {
 
     //! create a playlist and add songs to it
     const playlist = await Playlist.create({
-      name: 'playlist 1',
-      text: 'the best of the best',
+      name: 'Bensound Collection',
+      text: 'Mix songs from Bensound',
       songs: songs,
       users: users[0],
       type: 'public'
     })
+    //TODO remove later
+    const samplePlaylist = {
+      name: 'Sample',
+      text: 'sample description',
+      songs: [],
+      users: users[0],
+      type: 'public'
+    }
+    for (let i = 0; i < 10; i++) {
+      const playlist = await Playlist.create(samplePlaylist)
+    }
     console.log(playlist)
     //! adding the song to an album
     const albumToAddSongTo = await Album.findById(albums[0]._id)
