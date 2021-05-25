@@ -54,23 +54,39 @@ async function edit(req, res, next) {
     next(err)
   }
 }
+
+//! delete a playlist 
+async function remove(req, res, next) {
+  try {
+    const { playlistId } = req.params
+    const playlist = await Playlist.findById(playlistId)
+    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+      return res.status(302).json({ error: { message: 'Unauthorized' } })
+    }
+    await Playlist.deleteOne({ _id: playlist._id })
+    res.sendStatus(202)
+  } catch (err) {
+    next(err)
+  }
+}
 //! add a song to a playlist 
 async function addSong(req, res, next) {
   try {
-    const { playlistId } = req.params
+    const { playlistId, songId } = req.params
     const playlist = await Playlist.findById(playlistId)
     if (!playlist) {
       res.send(404).json({ error: { message: 'Album not found' } })
     }
-    playlist.songs.push(req.body)
-    const albumWithNewSong = await album.save()
-    res.status(200).json(albumWithNewSong.songs)
+    const song = await Song.findById(songId)
+    playlist.songs.push(song)
+    const playlistWithNewSong = await playlist.save()
+    res.status(200).json(playlistWithNewSong.songs)
   } catch (err) {
     next(err)
   }
 }
 
-//! delte a playlist 
+
 
 //! delete a song from playlist
 

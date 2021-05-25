@@ -1,5 +1,7 @@
 //! Get all albums
 import Album from '../models/albumModel.js'
+import Artist from '../models/artistModel.js'
+import Song from '../models/songModel.js'
 import User from '../models/userModel.js'
 
 //! get a particular album
@@ -104,12 +106,13 @@ async function songs(req, res, next) {
 //! add a song to album
 async function addSong(req, res, next) {
   try {
-    const { albumId } = req.params
+    const { albumId, songId } = req.params
     const album = await Album.findById(albumId)
     if (!album) {
       res.send(404).json({ error: { message: 'Album not found' } })
     }
-    album.songs.push(req.body)
+    const song = await Song.findById(songId)
+    album.songs.push(song)
     const albumWithNewSong = await album.save()
     res.status(200).json(albumWithNewSong.songs)
   } catch (err) {
