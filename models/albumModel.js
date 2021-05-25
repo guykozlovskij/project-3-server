@@ -8,7 +8,7 @@ const albumSchema = new mongoose.Schema({
   image: { type: String, default: 'default link' },
   year: { type: Date, required: true },
   lenght: { type: Number, required: true },
-  songs: [{ type: mongoose.Schema.ObjectId, ref: 'Song', required: true }],
+  songs: [{ type: mongoose.Schema.ObjectId, ref: 'Song' }],
   user: { type: mongoose.Schema.ObjectId, ref: 'User', required: true },
   comments: [commentSchema],
 })

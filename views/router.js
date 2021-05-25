@@ -2,7 +2,6 @@ import express from 'express'
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
-import secureRoute from '../middleware/secureRoute.js'
 
 import secureRoute from '../middleware/secureRoute.js'
 
@@ -27,9 +26,9 @@ router.route('/albums/:albumId')
 
 router.route('/albums/:albumId/songs')
   .get(albumsController.songs)
-  .post(secureRoute,albumsController.addSong)
 
 router.route('/albums/:albumId/songs/:songId')
+  .post(secureRoute, albumsController.addSong)
   .delete(secureRoute,albumsController.removeSong)
 
 router.route('/albums/:albumId/comments')
