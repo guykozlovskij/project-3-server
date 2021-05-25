@@ -3,7 +3,7 @@ import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
 
-// import secureRoute from '../middleware/secureRoute.js'
+import secureRoute from '../middleware/secureRoute.js'
 
 
 const router = express.Router()
@@ -14,34 +14,30 @@ router.route('/register')
 router.route('/login')
   .post(userController.login)
 
-
-router.route('/playlist/:id/')
-
-
 //? Albums
 router.route('/albums')
   .get(albumsController.albumIndex)
-  .post(albumsController.add)
+  .post(secureRoute,albumsController.add)
 
 router.route('/albums/:albumId')
   .get(albumsController.album)
-  .put(albumsController.edit)
-  .delete(albumsController.remove)
+  .put(secureRoute,albumsController.edit)
+  .delete(secureRoute,albumsController.remove)
 
 router.route('/albums/:albumId/songs')
   .get(albumsController.songs)
-  .post(albumsController.addSong)
+  .post(secureRoute,albumsController.addSong)
 
 router.route('/albums/:albumId/songs/:songId')
-  .delete(albumsController.removeSong)
+  .delete(secureRoute,albumsController.removeSong)
 
 router.route('/albums/:albumId/comments')
   .get(albumsController.comments)
-  .post(albumsController.addComment)
+  .post(secureRoute,albumsController.addComment)
 
 router.route('/albums/:albumId/comments/:commentId')
-  .put(albumsController.editComment)
-  .delete(albumsController.removeComment)
+  .put(secureRoute,albumsController.editComment)
+  .delete(secureRoute,albumsController.removeComment)
 
 //? Songs
 //! Songs routes

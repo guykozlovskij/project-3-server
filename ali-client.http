@@ -3,6 +3,8 @@
 
 @songId = 60abc8004b6beb66e32ab0d4
 
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFiYzdmZjRiNmJlYjY2ZTMyYWIwY2QiLCJpYXQiOjE2MjE4NzIwNDIsImV4cCI6MTYyMTkxNTI0Mn0.c77wnHJG_lEkV58Ab1K2YigTxZLJuhNrTW8KrrxqU2M
+
 GET http://localhost:4000/api/albums
 
 
@@ -45,6 +47,7 @@ Content-type: application/json
 ###
 PUT http://localhost:4000/api/albums/{{albumId}}
 Content-type: application/json
+Authorization: Bearer {{token}}
 
 {
   "name": "Album9",
@@ -63,3 +66,26 @@ GET http://localhost:4000/api/albums/{{albumId}}/songs
 
 ###
 DELETE http://localhost:4000/api/albums/{{albumId}}/songs/{{songId}}
+
+### USER Register
+
+POST http://localhost:4000/api/register
+content-type: application/json
+
+{
+  "username": "testuser8",
+  "email": "testuser8@testuser",
+  "password": "pass",
+  "passwordConfirmation": "pass",
+  "about": "Something About Me",
+  "image": "http://image.com/someimage.jpg"
+}
+
+### USER Login
+POST http://localhost:4000/api/login
+content-type: application/json
+
+{
+  "email": "user1@user",
+  "password": "pass"
+}

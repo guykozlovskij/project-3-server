@@ -45,8 +45,7 @@ async function comments(req, res, next) {
 //! add an album
 async function add(req, res, next) {
   try {
-    const user = await User.find()
-    req.body.user = user[0]
+    req.body.user = req.currentUser
     const album = await Album.create(req.body)
     res.status(200).json(album)
   } catch (err) {
@@ -58,14 +57,20 @@ async function add(req, res, next) {
 async function edit(req, res, next) {
   try {
     const { albumId } = req.params
-    const album = await Album.updateOne({ '_id': albumId }, req.body)
-    if (album.n < 1) {
-      res.status(404).json({ error: { message: 'Not found' } })
+    const album = await Album.findById(albumId)
+    if (!album) {
+      return res.status(404).json({ error: { message: 'Not found' } })
     }
+    if (!req.currentUser.equals(album.user._id)) {
+      return res.status(302).json({ error: { message: 'Unauthorized' } })
+    }
+    await Album.updateOne({ '_id': albumId }, req.body)
     if (album.nModified < 1) {
       res.sendStatus(304)
     }
     res.status(200).json(await Album.findById(albumId))
+
+
   } catch (err) {
     next(err)
   }
