@@ -49,7 +49,7 @@ async function add(req, res, next) {
   try {
     req.body.user = req.currentUser
     const album = await Album.create(req.body)
-    res.status(200).json(await Album.find())
+    res.status(200).json(album)
   } catch (err) {
     next(err)
   }

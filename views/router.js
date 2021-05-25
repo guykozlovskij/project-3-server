@@ -1,9 +1,16 @@
 import express from 'express'
+
+import secureRoute from '../middleware/secureRoute.js'
+
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
+<<<<<<< HEAD
 
 import secureRoute from '../middleware/secureRoute.js'
+=======
+import playlistsController from '../controllers/playlistsController.js'
+>>>>>>> development
 
 
 const router = express.Router()
@@ -15,15 +22,17 @@ router.route('/login')
   .post(userController.login)
 
 //? Albums
+//! Album routes
 router.route('/albums')
   .get(albumsController.albumIndex)
-  .post(secureRoute,albumsController.add)
+  .post(secureRoute, albumsController.add)
 
 router.route('/albums/:albumId')
   .get(albumsController.album)
-  .put(secureRoute,albumsController.edit)
-  .delete(secureRoute,albumsController.remove)
+  .put(secureRoute, albumsController.edit)
+  .delete(secureRoute, albumsController.remove)
 
+//! Song routes in albums
 router.route('/albums/:albumId/songs')
   .get(albumsController.songs)
 
@@ -31,13 +40,14 @@ router.route('/albums/:albumId/songs/:songId')
   .post(secureRoute, albumsController.addSong)
   .delete(secureRoute,albumsController.removeSong)
 
+//! Comment routes in albums
 router.route('/albums/:albumId/comments')
   .get(albumsController.comments)
-  .post(secureRoute,albumsController.addComment)
+  .post(secureRoute, albumsController.addComment)
 
 router.route('/albums/:albumId/comments/:commentId')
-  .put(secureRoute,albumsController.editComment)
-  .delete(secureRoute,albumsController.removeComment)
+  .put(secureRoute, albumsController.editComment)
+  .delete(secureRoute, albumsController.removeComment)
 
 //? Songs
 //! Songs routes
@@ -62,7 +72,12 @@ router.route('/songs/:id/comments/:commentId')
   .put(secureRoute, songController.editComment)
   .delete(secureRoute, songController.deleteComment)
 
+//? Playlist
+router.route('/playlist')
+  .get(playlistsController.playlistIndex)
+  .post(playlistsController.add)
 
-
+router.route('/playlist/:playlistId')
+  .get(playlistsController.playlist)
 export default router
 
