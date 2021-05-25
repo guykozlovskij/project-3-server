@@ -22,7 +22,7 @@ import albumData from './data/albumData.js'
 import songData from './data/songData.js'
 
 
-
+//! for adding songs add source BENSOUND and leadartist 
 async function seedDatabase() {
   try {
     // ? Waiting for the connection to mongo db...
