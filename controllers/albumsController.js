@@ -25,6 +25,7 @@ async function album(req, res, next) {
     album.songs = await Song.find({ album: albumId })
       .populate('leadArtist')
       .populate('album')
+
     if (!album) {
       res.status(404).json({ error: { message: 'Album not found' } })
     }

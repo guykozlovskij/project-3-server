@@ -6,8 +6,6 @@ import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
 import artistsController from '../controllers/artistsController.js'
-
-
 import playlistsController from '../controllers/playlistsController.js'
 
 
