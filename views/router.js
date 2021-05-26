@@ -5,12 +5,9 @@ import secureRoute from '../middleware/secureRoute.js'
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
-<<<<<<< HEAD
-=======
 import artistsController from '../controllers/artistsController.js'
 
 
->>>>>>> development
 import playlistsController from '../controllers/playlistsController.js'
 
 
