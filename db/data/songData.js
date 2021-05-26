@@ -1,7 +1,7 @@
 export default [
   {
     name: 'sunny',
-    genre: 'acustic',
+    genre: 'acoustic',
     image: 'https://www.bensound.com/bensound-img/betterdays.jpg',
     year: '2021',
     length: 140,
