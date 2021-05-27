@@ -149,6 +149,23 @@ async function removeSong(req, res, next) {
   }
 }
 
+//! add artist to album
+async function addArtist(req, res, next) {
+  try {
+    const { albumId, artistId } = req.params
+    const album = await Album.findById(albumId)
+    if (!album) {
+      res.send(404).json({ error: { message: 'Album not found' } })
+    }
+    const artist = await Artist.findById(artistId)
+    album.artists.push(artist)
+    const albumWithNewArtist = await album.save()
+    res.status(200).json(albumWithNewArtist)
+  } catch (err) {
+    next(err)
+  }
+}
+
 //! add a comment to songs
 async function addComment(req, res, next) {
   try {
@@ -218,6 +235,7 @@ export default {
   songs,
   addSong,
   removeSong,
+  addArtist,
   addComment,
   editComment,
   removeComment,

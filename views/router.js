@@ -5,12 +5,7 @@ import secureRoute from '../middleware/secureRoute.js'
 import albumsController from '../controllers/albumsController.js'
 import userController from '../controllers/usersController.js'
 import songController from '../controllers/songsController.js'
-<<<<<<< HEAD
-=======
 import artistsController from '../controllers/artistsController.js'
-
-
->>>>>>> development
 import playlistsController from '../controllers/playlistsController.js'
 
 
@@ -40,6 +35,10 @@ router.route('/albums/:albumId/songs')
 router.route('/albums/:albumId/songs/:songId')
   .post(secureRoute, albumsController.addSong)
   .delete(secureRoute, albumsController.removeSong)
+
+//! add artist to album
+router.route('/albums/:albumId/artists/:artistId')
+  .post(secureRoute, albumsController.addArtist)
 
 //! Comment routes in albums
 router.route('/albums/:albumId/comments')
