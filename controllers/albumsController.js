@@ -7,7 +7,7 @@ import User from '../models/userModel.js'
 //! get a particular album
 async function albumIndex(req, res, next) {
   try {
-    const album = await Album.find()
+    const album = await Album.find().populate('artists')
     res.status(200).json(album)
   } catch (err) {
     next(err)
