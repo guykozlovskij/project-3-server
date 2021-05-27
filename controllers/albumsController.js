@@ -120,8 +120,8 @@ async function addSong(req, res, next) {
     }
     const song = await Song.findById(songId)
     album.songs.push(song)
-    const albumWithNewSong = await album.save()
-    res.status(200).json(albumWithNewSong.songs)
+    await album.save()
+    res.status(200).json(song)
   } catch (err) {
     next(err)
   }
@@ -145,6 +145,23 @@ async function removeSong(req, res, next) {
     album.songs.splice(song, 1)
     const albumWithDeletedSong = await album.save()
     res.status(200).json(albumWithDeletedSong.songs)
+  } catch (err) {
+    next(err)
+  }
+}
+
+//! add artist to album
+async function addArtist(req, res, next) {
+  try {
+    const { albumId, artistId } = req.params
+    const album = await Album.findById(albumId)
+    if (!album) {
+      res.send(404).json({ error: { message: 'Album not found' } })
+    }
+    const artist = await Artist.findById(artistId)
+    album.artists.push(artist)
+    const albumWithNewArtist = await album.save()
+    res.status(200).json(albumWithNewArtist)
   } catch (err) {
     next(err)
   }
@@ -182,7 +199,8 @@ async function editComment(req, res, next) {
     }
     comment.set(req.body)
     const albumWithDeletedCommented = await album.save()
-    res.status(200).json(albumWithDeletedCommented.comments)
+    const commentEdited = await albumWithDeletedCommented.comments.id(commentId)
+    res.status(200).json(commentEdited)
   } catch (err) {
     next(err)
   }
@@ -219,6 +237,7 @@ export default {
   songs,
   addSong,
   removeSong,
+  addArtist,
   addComment,
   editComment,
   removeComment,
