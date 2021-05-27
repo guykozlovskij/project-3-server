@@ -35,13 +35,9 @@ async function like(req, res, next) {
       if (thingToLike.likesCount > 0) {
         thingToLike.likesCount--
         await thingToLike.save()
-        console.log(thingToLike)
         const user = await User.findById(req.currentUser._id)
         const thingToRemove = user.likes.findIndex(savedId => savedId === id)
-        console.log('THING TO REMOVE', thingToRemove)
         user.likes.splice(thingToRemove, 1)
-        console.log('USER LIKES', user.likes)
-        // user.likes[thingToRemove].remove()
         await user.save()
         res.status(200).json(thingToLike)
       }
