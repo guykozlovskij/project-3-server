@@ -10,6 +10,7 @@ const songSchema = new mongoose.Schema({
   year: { type: Date, required: true },
   source: { type: String },
   musicSrc: { type: String },
+  length: {type: Number},
   album: { type: mongoose.Schema.ObjectId, ref: 'Album' },
   artists: [{ type: mongoose.Schema.ObjectId, ref: 'Artist' }],
   comments: [commentSchema],
