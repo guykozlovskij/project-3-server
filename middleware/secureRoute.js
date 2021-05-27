@@ -4,7 +4,6 @@ import { secret } from '../config/environment.js'
 
 export default function secureRoute(req, res, next) {
   const rawToken = req.headers.authorization
-  console.log(rawToken)
 
   if (!rawToken || !rawToken.startsWith('Bearer')) {
     return res.status(401).json({ message: 'Unathorized' })
