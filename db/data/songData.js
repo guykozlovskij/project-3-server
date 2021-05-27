@@ -522,5 +522,5 @@ export default [
     length: 204,
     musicSrc: 'https://res.cloudinary.com/dvpwosiqu/video/upload/v1621951134/bensound-instinct_zjgvzc.mp3',
     comments: [],
-  },
+  }
 ]
