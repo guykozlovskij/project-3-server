@@ -8,8 +8,8 @@ import User from '../models/userModel.js'
 async function songsIndex(req, res, next) {
   try {
     const songList = await Song.find()
-    .populate('singer')
-    .populate('albums')
+      .populate('singer')
+      .populate('albums')
 
     res.status(200).json(songList)
   } catch (e) {

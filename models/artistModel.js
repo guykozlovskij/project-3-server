@@ -11,6 +11,7 @@ const artistSchema = new mongoose.Schema({
   albums: [{ type: mongoose.Schema.ObjectId, ref: 'Album' }],
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
   comments: [commentSchema],
+  likesCount: { type: Number, default: 0 },
 })
 
 export default mongoose.model('Artist', artistSchema)

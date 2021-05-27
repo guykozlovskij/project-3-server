@@ -6,7 +6,8 @@ const playlistSchema = new mongoose.Schema({
   text: { type: String },
   songs: [{ type: mongoose.Schema.ObjectId, ref: 'Song' }],
   users: [{ type: mongoose.Schema.ObjectId, ref: 'User', required: true }],
-  type: { type: String, default: 'Private' }
+  type: { type: String, default: 'Private' },
+  likesCount: { type: Number, default: 0 },
 })
 
 
