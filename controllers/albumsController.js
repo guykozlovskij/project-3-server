@@ -7,7 +7,7 @@ import User from '../models/userModel.js'
 //! get a particular album
 async function albumIndex(req, res, next) {
   try {
-    const album = await Album.find()
+    const album = await Album.find().populate('leadArtist')
     res.status(200).json(album)
   } catch (err) {
     next(err)
@@ -18,7 +18,14 @@ async function albumIndex(req, res, next) {
 async function album(req, res, next) {
   try {
     const { albumId } = req.params
-    const album = await Album.findById(albumId).populate('songs').populate('artists')
+    const album = await Album.findById(albumId)
+      .populate('songs')
+      .populate('artists')
+
+    album.songs = await Song.find({ album: albumId })
+      .populate('singer')
+      .populate('album')
+
     if (!album) {
       res.status(404).json({ error: { message: 'Album not found' } })
     }
@@ -91,7 +98,9 @@ async function remove(req, res, next) {
 async function songs(req, res, next) {
   try {
     const { albumId } = req.params
-    const album = await Album.findById(albumId).populate('songs')
+    const album = await Album.findById(albumId)
+      .populate('singer')
+      .populate('songs')
     if (!album) {
       res.send(404).json({ error: { message: 'Album not found' } })
     }
@@ -111,8 +120,8 @@ async function addSong(req, res, next) {
     }
     const song = await Song.findById(songId)
     album.songs.push(song)
-    const albumWithNewSong = await album.save()
-    res.status(200).json(albumWithNewSong.songs)
+    await album.save()
+    res.status(200).json(song)
   } catch (err) {
     next(err)
   }
@@ -136,6 +145,23 @@ async function removeSong(req, res, next) {
     album.songs.splice(song, 1)
     const albumWithDeletedSong = await album.save()
     res.status(200).json(albumWithDeletedSong.songs)
+  } catch (err) {
+    next(err)
+  }
+}
+
+//! add artist to album
+async function addArtist(req, res, next) {
+  try {
+    const { albumId, artistId } = req.params
+    const album = await Album.findById(albumId)
+    if (!album) {
+      res.send(404).json({ error: { message: 'Album not found' } })
+    }
+    const artist = await Artist.findById(artistId)
+    album.artists.push(artist)
+    const albumWithNewArtist = await album.save()
+    res.status(200).json(albumWithNewArtist)
   } catch (err) {
     next(err)
   }
@@ -173,7 +199,8 @@ async function editComment(req, res, next) {
     }
     comment.set(req.body)
     const albumWithDeletedCommented = await album.save()
-    res.status(200).json(albumWithDeletedCommented.comments)
+    const commentEdited = await albumWithDeletedCommented.comments.id(commentId)
+    res.status(200).json(commentEdited)
   } catch (err) {
     next(err)
   }
@@ -210,6 +237,7 @@ export default {
   songs,
   addSong,
   removeSong,
+  addArtist,
   addComment,
   editComment,
   removeComment,
