@@ -23,8 +23,9 @@ async function album(req, res, next) {
       .populate('artists')
 
     album.songs = await Song.find({ album: albumId })
-      .populate('leadArtist')
+      .populate('singer')
       .populate('album')
+
     if (!album) {
       res.status(404).json({ error: { message: 'Album not found' } })
     }
@@ -98,7 +99,7 @@ async function songs(req, res, next) {
   try {
     const { albumId } = req.params
     const album = await Album.findById(albumId)
-      .populate('leadArtist')
+      .populate('singer')
       .populate('songs')
     if (!album) {
       res.send(404).json({ error: { message: 'Album not found' } })
@@ -119,8 +120,8 @@ async function addSong(req, res, next) {
     }
     const song = await Song.findById(songId)
     album.songs.push(song)
-    const albumWithNewSong = await album.save()
-    res.status(200).json(albumWithNewSong.songs)
+    await album.save()
+    res.status(200).json(song)
   } catch (err) {
     next(err)
   }
@@ -198,7 +199,8 @@ async function editComment(req, res, next) {
     }
     comment.set(req.body)
     const albumWithDeletedCommented = await album.save()
-    res.status(200).json(albumWithDeletedCommented.comments)
+    const commentEdited = await albumWithDeletedCommented.comments.id(commentId)
+    res.status(200).json(commentEdited)
   } catch (err) {
     next(err)
   }

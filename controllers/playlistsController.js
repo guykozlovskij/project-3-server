@@ -14,7 +14,11 @@ async function playlistIndex(req, res, next) {
 async function playlist(req, res, next) {
   try {
     const { playlistId } = req.params
-    const playlist = await Playlist.findById(playlistId).populate('users').populate('songs')
+    const playlist = await Playlist.findById(playlistId)
+      .populate('songs')
+      .populate('users')
+
+
     if (!playlist) {
       return res.status(404).json({ error: { message: 'Unauthorized' } })
     }

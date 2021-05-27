@@ -66,7 +66,7 @@ async function seedDatabase() {
       return {
         ...song,
         user: users[0]._id,
-        leadArtist: artists[0],
+        singer: artists[0],
         album: albums[0],
         comments: commentToAdd
       }
