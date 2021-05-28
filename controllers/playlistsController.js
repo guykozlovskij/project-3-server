@@ -60,7 +60,7 @@ async function edit(req, res, next) {
     if (!playlist) {
       return res.status(404).json({ error: { message: 'Not found' } })
     }
-    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+    if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
       return res.status(302).json({ error: { message: 'Unauthorized' } })
     }
     const editedPlaylist = await Playlist.updateOne({ '_id': playlistId }, req.body)
@@ -80,7 +80,7 @@ async function remove(req, res, next) {
   try {
     const { playlistId } = req.params
     const playlist = await Playlist.findById(playlistId)
-    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+    if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
       return res.status(302).json({ error: { message: 'Unauthorized' } })
     }
     await Playlist.deleteOne({ _id: playlist._id })
@@ -97,7 +97,7 @@ async function addSong(req, res, next) {
     if (!playlist) {
       res.send(404).json({ error: { message: 'Playlist not found' } })
     }
-    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+    if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
       return res.status(302).json({ error: { message: 'Unauthorized' } })
     }
     const song = await Song.findById(songId)
@@ -117,7 +117,7 @@ async function removeSong(req, res, next) {
     if (!playlist) {
       return res.status(404).json({ error: { message: 'Playlist not found' } })
     }
-    if (playlist.type.toLowerCase() === 'private' && !playlist.users.includes(req.currentUser._id)) {
+    if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
       return res.status(302).json({ error: { message: 'Unauthorized' } })
     }
     const song = playlist.songs.findIndex((song) => song.equals(songId))
