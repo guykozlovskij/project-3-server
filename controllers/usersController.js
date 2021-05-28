@@ -33,8 +33,9 @@ async function login(req, res, next) {
       secret,
       { expiresIn: '12h' }
     )
-
-    res.status(202).json({ message: 'Login Success!', token })
+    const likes = user.likes
+    
+    res.status(202).json({ message: 'Login Success!', token, likes })
   } catch (e) {
     next(e)
   }

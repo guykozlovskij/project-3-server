@@ -50,7 +50,7 @@ async function seedDatabase() {
     //! Seed albums
 
     const albumWithArtistAndUser = albumData.map(album => {
-      return { ...album, user: users[0], artists: artists }
+      return { ...album, user: users[0], artists: artists, leadArtist: artists[0]._id }
     })
     // albumWithArtistAndUser.artists.push(artists[0])
 
