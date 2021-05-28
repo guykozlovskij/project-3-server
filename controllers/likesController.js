@@ -18,7 +18,7 @@ async function like(req, res, next) {
     thingToLike = model === 'Playlist' ? await Playlist.findById(id) : null
     thingToLike = model === 'Song' ? await Song.findById(id) : null
     if (!thingToLike) {
-      throw new NotFound('Noithing Found')
+      throw new NotFound('Nothing Found')
     }
     console.log(thingToLike)
     if (method === 'plus') {
@@ -27,10 +27,10 @@ async function like(req, res, next) {
       console.log(thingToLike)
       const user = await User.findById(req.currentUser._id)
       user.likes.push(id)
-      await user.save()
+      const savedUser = await user.save()
       console.log(user)
 
-      res.status(200).json(thingToLike)
+      res.status(200).json(savedUser)
     } else if (method === 'minus') {
       if (thingToLike.likesCount > 0) {
         thingToLike.likesCount--
@@ -42,11 +42,12 @@ async function like(req, res, next) {
         user.likes.splice(thingToRemove, 1)
         console.log('USER LIKES', user.likes)
         // user.likes[thingToRemove].remove()
-        await user.save()
-        res.status(200).json(thingToLike)
+        const savedUser = await user.save()
+        res.status(200).json(savedUser)
       }
     }
   } catch (e) {
+    console.log('BEEN AN ERROR', e)
     next(e)
   }
 }
