@@ -8,8 +8,8 @@ import User from '../models/userModel.js'
 async function songsIndex(req, res, next) {
   try {
     const songList = await Song.find()
-    .populate('singer')
-    .populate('albums')
+      .populate('singer')
+      .populate('albums')
 
     res.status(200).json(songList)
   } catch (e) {
@@ -39,7 +39,9 @@ async function showSingleSong(req, res, next) {
 async function getCommentsForSong(req, res, next) {
   try {
     const id = req.params.id
-    const commentsOfSong = await Song.findById(id).populate('comments')
+    const commentsOfSong = await Song.findById(id)
+      .populate('comments')
+      .populate('comments.username')
 
     if (!commentsOfSong) {
       throw new NotFound('No comment found!')
@@ -115,8 +117,7 @@ async function createComment(req, res, next) {
   req.body.user = req.currentUser
 
   try {
-    const user = await User.find()
-    req.body.username = user[0]
+    req.body.username = req.currentUser
 
     //* Get Song to comment on
     const song = await Song.findById(req.params.id)
