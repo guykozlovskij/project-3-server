@@ -16,6 +16,7 @@ const songSchema = new mongoose.Schema({
   comments: [commentSchema],
   likesCount: { type: Number, default: 0 },
   user: { type: mongoose.Schema.ObjectId, ref: 'User' },
+  isDeleted: {type: Boolean, default: false, required: true },
 })
 
 export default mongoose.model('Song', songSchema)

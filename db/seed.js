@@ -68,7 +68,8 @@ async function seedDatabase() {
         user: users[0]._id,
         singer: artists[0],
         album: albums[0],
-        comments: commentToAdd
+        comments: commentToAdd,
+        isDeleted: false,
       }
     })
     // add songs to the database
