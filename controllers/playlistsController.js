@@ -5,7 +5,7 @@ import User from '../models/userModel.js'
 //! Get all playlist
 async function playlistIndex(req, res, next) {
   try {
-    const playlist = await Playlist.find().populate('users')
+    const playlist = await Playlist.find().populate('users').populate('user')
     res.status(200).json(playlist)
   } catch (err) {
     next(err)
