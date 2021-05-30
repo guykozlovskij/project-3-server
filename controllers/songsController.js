@@ -2,7 +2,7 @@ import Song from '../models/songModel.js'
 import { NotFound } from '../lib/errors.js'
 
 import Artist from '../models/artistModel.js'
-import User from '../models/userModel.js'
+
 
 //! GET all songs
 async function songsIndex(req, res, next) {

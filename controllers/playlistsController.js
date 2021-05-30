@@ -1,5 +1,6 @@
 import Playlist from '../models/playlistModel.js'
 import Song from '../models/songModel.js'
+import User from '../models/userModel.js'
 
 //! Get all playlist
 async function playlistIndex(req, res, next) {
@@ -44,12 +45,21 @@ async function songs(req, res, next) {
 
 //! add a playlist
 async function add(req, res, next) {
+  
+  
+  
   try {
-    req.body.users = req.currentUser
+    req.body.user = req.currentUser
     const playlist = await Playlist.create(req.body)
+    const user = await User.findById(req.currentUser._id)
+    user.playlists.push(playlist._id)
+    console.log(user)
+    const savedUser = await user.save()
+    console.log(savedUser)
+    console.log('PLAYLISTS', playlist)
     res.status(200).json(playlist)
-  } catch (err) {
-    next(err)
+  } catch (e) {
+    next(e)
   }
 }
 //! edit an playlist
@@ -141,5 +151,5 @@ export default {
   remove,
   songs,
   addSong,
-  removeSong
+  removeSong,
 }
