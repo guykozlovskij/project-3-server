@@ -9,13 +9,14 @@ async function artistIndex(req, res, next) {
   try {
     const artist = await Artist.find()
     res.status(200).json(artist)
+
   } catch (e) {
     next(e)
   }
 }
 
 
-//! get a particular artist 
+//! Get a particular artist 
 async function artist(req, res, next) {
   try {
     const { artistId } = req.params
@@ -24,7 +25,6 @@ async function artist(req, res, next) {
       .populate('user')
       .populate('songs')
       .populate('albums')
-
     if (!artist) {
       return res.status(404).json({ error: { message: 'Artist not found.' } })
     }
@@ -36,12 +36,11 @@ async function artist(req, res, next) {
 }
 
 
-//! POST an artist
+//! Create an artist
 async function createArtist(req, res, next) {
   try {
     const user = await User.find()
     req.body.user = user[0]
-
     const artist = await Artist.create(req.body)
     res.status(200).json(artist)
 
@@ -51,7 +50,7 @@ async function createArtist(req, res, next) {
 }
 
 
-//! edit an artist
+//! Edit an artist
 async function editArtist(req, res, next) {
   try {
     const user = await User.find()
@@ -74,14 +73,13 @@ async function editArtist(req, res, next) {
 }
 
 
-//! assing song to artist
+//! Assing song to artist
 async function addSongToArtist(req, res, next) {
   try {
-    const user = await User.find()
+    const user = await User.find()  
+    //* Intial songs seeded are asigned to user1
     req.body.user = user[0]
-
     const { artistId, songId } = req.params
-
     const artist = await Artist.findById(artistId)
     const song = await Song.findById(songId)
 
@@ -91,6 +89,7 @@ async function addSongToArtist(req, res, next) {
     artist.songs.push(song)
     const artistWithNewSong = await artist.save()
     res.status(200).json(artistWithNewSong.songs)
+
   } catch (e) {
     next(e)
   }
@@ -111,11 +110,9 @@ async function addAlbumToArtist(req, res, next) {
     if (!artist) {
       res.send(404).json({ error: { message: 'Artist not found' } })
     }
-
     artist.albums.push(album)
     const artistWithNewAlbum = await artist.save()
     res.status(200).json(artistWithNewAlbum.albums)
-
 
   } catch (e) {
     next(e)
@@ -123,7 +120,7 @@ async function addAlbumToArtist(req, res, next) {
 }
 
 
-//! delete an artist
+//! elete an artist
 async function removeArtist(req, res, next) {
   try {
     const { artistId } = req.params
@@ -133,7 +130,6 @@ async function removeArtist(req, res, next) {
     next(e)
   }
 }
-
 
 
 export default {

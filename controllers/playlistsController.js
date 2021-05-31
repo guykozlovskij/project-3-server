@@ -10,7 +10,9 @@ async function playlistIndex(req, res, next) {
     next(err)
   }
 }
-//! get a particular playlist
+
+
+//! Get a particular playlist
 async function playlist(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -18,17 +20,18 @@ async function playlist(req, res, next) {
       .populate('songs')
       .populate('users')
 
-
     if (!playlist) {
       return res.status(404).json({ error: { message: 'Unauthorized' } })
     }
     res.status(200).json(playlist)
+
   } catch (err) {
     next(err)
   }
 }
 
-//! get all songs from playlist
+
+//! Get all songs from playlist
 async function songs(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -42,7 +45,8 @@ async function songs(req, res, next) {
   }
 }
 
-//! add a playlist
+
+//! Create a playlist
 async function add(req, res, next) {
   try {
     req.body.users = req.currentUser
@@ -52,7 +56,9 @@ async function add(req, res, next) {
     next(err)
   }
 }
-//! edit an playlist
+
+
+//! Edit an playlist
 async function edit(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -69,13 +75,13 @@ async function edit(req, res, next) {
     }
     res.status(200).json(await Playlist.findById(playlistId))
 
-
   } catch (err) {
     next(err)
   }
 }
 
-//! delete a playlist 
+
+//! Delete a playlist 
 async function remove(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -89,7 +95,9 @@ async function remove(req, res, next) {
     next(err)
   }
 }
-//! add a song to a playlist 
+
+
+//! Add a song to a playlist 
 async function addSong(req, res, next) {
   try {
     const { playlistId, songId } = req.params
@@ -100,16 +108,19 @@ async function addSong(req, res, next) {
     if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
       return res.status(302).json({ error: { message: 'Unauthorized' } })
     }
+
     const song = await Song.findById(songId)
     playlist.songs.push(song)
+
     const playlistWithNewSong = await playlist.save()
     res.status(200).json(playlistWithNewSong.songs)
+
   } catch (err) {
     next(err)
   }
 }
 
-//! delete a song from playlist
+//! Remove a song from playlist
 async function removeSong(req, res, next) {
   try {
     const { playlistId, songId } = req.params
@@ -141,5 +152,5 @@ export default {
   remove,
   songs,
   addSong,
-  removeSong
+  removeSong,
 }

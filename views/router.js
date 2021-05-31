@@ -41,14 +41,6 @@ router.route('/albums/:albumId/songs/:songId')
 router.route('/albums/:albumId/artists/:artistId')
   .post(secureRoute, albumsController.addArtist)
 
-//! Comment routes in albums
-router.route('/albums/:albumId/comments')
-  .get(albumsController.comments)
-  .post(secureRoute, albumsController.addComment)
-
-router.route('/albums/:albumId/comments/:commentId')
-  .put(secureRoute, albumsController.editComment)
-  .delete(secureRoute, albumsController.removeComment)
 
 //? Songs
 //! Songs routes
