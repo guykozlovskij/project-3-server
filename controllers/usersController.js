@@ -34,8 +34,9 @@ async function login(req, res, next) {
       { expiresIn: '12h' }
     )
     const likes = user.likes
+    const playlists = user.playlists
     
-    res.status(202).json({ message: 'Login Success!', token, likes })
+    res.status(202).json({ message: 'Login Success!', token, likes, playlists })
   } catch (e) {
     next(e)
   }
