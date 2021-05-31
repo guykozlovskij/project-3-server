@@ -2,23 +2,25 @@ import mongoose from 'mongoose'
 import uniqueValidator from 'mongoose-unique-validator'
 import mongooseHidden from 'mongoose-hidden'
 import bcrypt from 'bcrypt'
-
 import userSchema from './userSchema.js'
 
-//  * Hash the password
+
+//! Hash the password
 userSchema.pre('save', function encryptPassword(next) {
   if (this.isModified('password')) {
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync())
   }
   next()
 })
-// * Compare hashed password given with that stored in the DB
+
+
+//! Compare hashed password given with that stored in the DB
 userSchema.methods.validatePassword = function validatePassword(password) {
   return bcrypt.compareSync(password, this.password)
 }
 
-// ? Virtual password
-// ? _ used for temporary reasons or internal reasons
+
+//! Virtual password
 userSchema
   .virtual('passwordConfirmation')
   .set(function setPasswordConfirmation(passwordConfirmation) {
@@ -33,7 +35,6 @@ userSchema.pre('validate', function checkPassword(next) {
   }
   next()
 })
-
 userSchema.plugin(uniqueValidator)
 userSchema.plugin(mongooseHidden({ defaultHidden: { password: true, email: true } }))
 

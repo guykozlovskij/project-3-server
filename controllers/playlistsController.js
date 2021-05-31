@@ -53,11 +53,13 @@ async function add(req, res, next) {
   try {
     req.body.user = req.currentUser
     const playlist = await Playlist.create(req.body)
+
     const user = await User.findById(req.currentUser._id)
     user.playlists.push(playlist._id)
-    const savedUser = await user.save()
-    console.log(savedUser)
+    
+    await user.save()
     res.status(200).json(playlist)
+
   } catch (e) {
     next(e)
   }

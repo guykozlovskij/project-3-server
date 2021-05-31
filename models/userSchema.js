@@ -13,5 +13,4 @@ const userSchema = new mongoose.Schema({
   addedSongs: [{ type: mongoose.Schema.ObjectId, ref: 'Song' }],
 })
 
-
 export default userSchema

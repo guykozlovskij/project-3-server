@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-
 import commentSchema from './commentSchema.js'
 
 const songSchema = new mongoose.Schema({

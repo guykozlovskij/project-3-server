@@ -11,5 +11,4 @@ const playlistSchema = new mongoose.Schema({
   likesCount: { type: Number, default: 0 },
 })
 
-
 export default mongoose.model('Playlist', playlistSchema)

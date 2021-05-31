@@ -15,10 +15,7 @@ function errorHandler(err, req, res, next) {
       .json({ message: 'There was an error, Details provided are not valid' })
   }
 
-  // // TODO follow up on the logic of the validation errors
-  // TODO usage of key as a key ?
-  // ? loop through each err.error message, place on our new errrors object
-  // ? return the error messages as the response to the API request
+
   if (err.name === 'ValidationError') {
     const errors = {}
     for (const key in err.errors) {
@@ -30,7 +27,7 @@ function errorHandler(err, req, res, next) {
     })
 
   }
-  // ? internal server error
+  
   res.sendStatus(500)
   next(err)
 }

@@ -1,52 +1,41 @@
-// ! This is our little seed program. It is going to connect to mongo DB, then save some
-// ! pokemon, then disconnect.
-// ? 1) Connect to DB
-// ? 2) Seed with data
-// ? 3) Disconnect
-
-// ? Import mongoose. This is the INTERFACE between Mongo DB and our program.
 import mongoose from 'mongoose'
 import connectToDb from './connectToDb.js'
 
-// ! Import my user model and data
+//! Models
 import User from '../models/userModel.js'
 import Artist from '../models/artistModel.js'
 import Album from '../models/albumModel.js'
 import Song from '../models/songModel.js'
 import Playlist from '../models/playlistModel.js'
 
+//! Users
 import usersData from './data/userData.js'
 import artistData from './data/artistData.js'
 import albumData from './data/albumData.js'
 import songData from './data/songData.js'
 
-//! for adding songs add source BENSOUND and leadartist
+
 async function seedDatabase() {
   try {
-    // ? Waiting for the connection to mongo db...
     await connectToDb()
     console.log('🤖 Successfully connected to mongo')
-
-    // ? Clear the database every time I seed
     await mongoose.connection.db.dropDatabase()
-    console.log('🤖 Removed all pokemon')
+    console.log('🤖 Removed all data')
 
-    // ! Seed with users
+
+    //! Seed users
     const users = await User.create(usersData)
     console.log(`🤖 ${users.length} users created!`)
-    // console.log(users)
+
 
     //! Seed artists
     const artistDataWithUser = artistData.map((artist) => {
       return { ...artist, user: users[0] }
     })
-
     const artists = await Artist.create(artistDataWithUser)
 
-    // console.log(artists[0])
 
     //! Seed albums
-
     const albumWithArtistAndUser = albumData.map((album) => {
       return {
         ...album,
@@ -55,16 +44,16 @@ async function seedDatabase() {
         leadArtist: artists[0]._id,
       }
     })
-    // albumWithArtistAndUser.artists.push(artists[0])
-
     const albums = await Album.create(albumWithArtistAndUser)
 
-    // console.log(albums)
+    //* Initial comment to all songs
     const commentToAdd = {
       username: users[0]._id,
       text: 'A great song, indeed.',
     }
-    //! SONGS
+
+
+    //! Seed songs
     const songsWithUser = songData.map((song) => {
       return {
         ...song,
@@ -75,13 +64,12 @@ async function seedDatabase() {
         isDeleted: false,
       }
     })
-    // add songs to the database
     const songs = await Song.create(songsWithUser)
     console.log(`${songs.length} songs have been added`)
 
-    // console.log(songs)
 
-    //! create a playlist and add songs to it
+    //! Create a playlist and add songs to it
+    //* Initial BenSound playlist
     const playlist = await Playlist.create({
       name: 'Bensound Collection',
       text: 'Mix songs from Bensound',
@@ -91,59 +79,46 @@ async function seedDatabase() {
       type: 'public',
     })
 
-    //TODO remove later
-    const samplePlaylist = {
-      name: 'Sample',
-      text: 'sample description',
-      songs: [],
-      users: users[0],
-      type: 'public',
-    }
-    await Playlist.create(samplePlaylist)
     const playlistUser = await User.findById(users[0])
     playlistUser.playlists.push(playlist._id)
-    const savedUser = await playlistUser.save()
-    console.log(savedUser)
+    await playlistUser.save()
 
-    //! adding the song to an album
+
+    //! Adding songs to an album
     const albumToAddSongTo = await Album.findById(albums[0]._id)
     songs.map((song) => {
       albumToAddSongTo.songs.push(song._id)
       albumToAddSongTo.comments.push(commentToAdd)
     })
-    const albumWithAddedSongs = await albumToAddSongTo.save()
-    console.log(albumWithAddedSongs)
-    // console.log(albumWithAddedSongs)
+    await albumToAddSongTo.save()
 
-    //! adding songs to artist
+
+    //! Adding songs to an artist
     const artistToAddSongsTo = await Artist.findById(artists[0]._id)
-
-    // console.log(artistToAddSongsTo)
-
     songs.map((song) => {
       artistToAddSongsTo.songs.push(song._id)
       artistToAddSongsTo.comments.push(commentToAdd)
     })
-    //! adding albums to artist
+    
+
+    //! Adding albums to an artist
     albums.map((album) => {
       artistToAddSongsTo.albums.push(album)
     })
     await artistToAddSongsTo.save()
-    //! adding song to user addedSongs
 
+
+    //! Adding a song to user addedSongs
     const userWithSong = await User.findById(users[0]._id)
     songs.map((song) => {
       userWithSong.addedSongs.push(song._id)
     })
-    const userWithAddedSong = await userWithSong.save()
-    console.log(userWithAddedSong)
-    // console.log(userWithAddedSong)
-
+    await userWithSong.save()
     console.log('Songs added to users addedSongs')
 
-    // ? Disconnect once we've finished..
     await mongoose.connection.close()
     console.log('🤖 Disconnected from mongo. All done!')
+
   } catch (e) {
     console.log('🤖 Something went wrong')
     console.log(e)
