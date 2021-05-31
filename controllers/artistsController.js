@@ -2,6 +2,7 @@ import Artist from '../models/artistModel.js'
 import User from '../models/userModel.js'
 import Song from '../models/songModel.js'
 import Album from '../models/albumModel.js'
+import { NotFound } from '../lib/errors.js'
 
 
 //! Get all artists
@@ -9,24 +10,23 @@ async function artistIndex(req, res, next) {
   try {
     const artist = await Artist.find()
     res.status(200).json(artist)
+
   } catch (e) {
     next(e)
   }
 }
 
 
-//! get a particular artist 
+//! Get a particular artist 
 async function artist(req, res, next) {
   try {
     const { artistId } = req.params
-    console.log(artistId)
     const artist = await Artist.findById(artistId)
       .populate('user')
       .populate('songs')
       .populate('albums')
-
     if (!artist) {
-      return res.status(404).json({ error: { message: 'Artist not found.' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
     res.status(200).json(artist)
 
@@ -36,12 +36,11 @@ async function artist(req, res, next) {
 }
 
 
-//! POST an artist
+//! Create an artist
 async function createArtist(req, res, next) {
   try {
     const user = await User.find()
     req.body.user = user[0]
-
     const artist = await Artist.create(req.body)
     res.status(200).json(artist)
 
@@ -51,7 +50,7 @@ async function createArtist(req, res, next) {
 }
 
 
-//! edit an artist
+//! Edit an artist
 async function editArtist(req, res, next) {
   try {
     const user = await User.find()
@@ -61,7 +60,7 @@ async function editArtist(req, res, next) {
     const artist = await Artist.updateOne({ '_id': artistId }, req.body)
 
     if (artist.n < 1) {
-      res.status(404).json({ error: { message: 'Not found' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
     if (artist.nModified < 1) {
       res.sendStatus(304)
@@ -74,23 +73,23 @@ async function editArtist(req, res, next) {
 }
 
 
-//! assing song to artist
+//! Assing song to artist
 async function addSongToArtist(req, res, next) {
   try {
     const user = await User.find()
+    //* Intial songs seeded are asigned to user1
     req.body.user = user[0]
-
     const { artistId, songId } = req.params
-
     const artist = await Artist.findById(artistId)
     const song = await Song.findById(songId)
 
     if (!artist) {
-      res.send(404).json({ error: { message: 'Artist not found' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
     artist.songs.push(song)
     const artistWithNewSong = await artist.save()
     res.status(200).json(artistWithNewSong.songs)
+
   } catch (e) {
     next(e)
   }
@@ -109,13 +108,14 @@ async function addAlbumToArtist(req, res, next) {
     const album = await Album.findById(albumId)
 
     if (!artist) {
-      res.send(404).json({ error: { message: 'Artist not found' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
-
+    if (!album) {
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
+    }
     artist.albums.push(album)
     const artistWithNewAlbum = await artist.save()
     res.status(200).json(artistWithNewAlbum.albums)
-
 
   } catch (e) {
     next(e)
@@ -123,7 +123,7 @@ async function addAlbumToArtist(req, res, next) {
 }
 
 
-//! delete an artist
+//! elete an artist
 async function removeArtist(req, res, next) {
   try {
     const { artistId } = req.params
@@ -133,7 +133,6 @@ async function removeArtist(req, res, next) {
     next(e)
   }
 }
-
 
 
 export default {

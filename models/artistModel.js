@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-
 import commentSchema from './commentSchema.js'
 
 const artistSchema = new mongoose.Schema({

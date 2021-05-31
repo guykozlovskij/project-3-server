@@ -7,18 +7,19 @@ function errorHandler(err, req, res, next) {
     return res.status(400).json({ message: 'Invalid parameter given' })
   }
   if (err.name === 'NotFound') {
-    return res.sendStatus(404).json({ message: 'Not Found' })
+    return res.status(err.status).json({ error: { name: err.name, message: err.message } })
   }
   if (err.name === 'NotValid') {
     return res
-      .status(400)
+      .status(err.status)
       .json({ message: 'There was an error, Details provided are not valid' })
   }
+  if (err.name === 'NotAuthorized') {
+    return res.
+      status(err.status)
+      .json({ error: { name: err.name, message: err.message } })
+  }
 
-  // // TODO follow up on the logic of the validation errors
-  // TODO usage of key as a key ?
-  // ? loop through each err.error message, place on our new errrors object
-  // ? return the error messages as the response to the API request
   if (err.name === 'ValidationError') {
     const errors = {}
     for (const key in err.errors) {
@@ -30,7 +31,7 @@ function errorHandler(err, req, res, next) {
     })
 
   }
-  // ? internal server error
+
   res.sendStatus(500)
   next(err)
 }
