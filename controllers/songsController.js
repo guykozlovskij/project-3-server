@@ -1,6 +1,7 @@
 import Song from '../models/songModel.js'
 import { NotFound } from '../lib/errors.js'
 import Artist from '../models/artistModel.js'
+import Album from '../models/albumModel.js'
 
 
 //! Get all songs
@@ -16,6 +17,7 @@ async function songsIndex(req, res, next) {
     next(e)
   }
 }
+
 
 //! Get a particular song
 async function showSingleSong(req, res, next) {
@@ -36,6 +38,7 @@ async function showSingleSong(req, res, next) {
   }
 }
 
+
 //! Get all comments for a particular song
 async function getCommentsForSong(req, res, next) {
   try {
@@ -54,20 +57,34 @@ async function getCommentsForSong(req, res, next) {
   }
 }
 
+
 //! Create/upload a song
 async function uploadSong(req, res, next) {
-  const artist = await Artist.find()
-  req.body.leadArtist = artist[0]
+  const artist = await Artist.findById(req.body.singer)
+  const album = await Album.findById(req.body.album)
   req.body.user = req.currentUser
 
   try {
     const newSong = await Song.create(req.body)
+    await album.songs.push(newSong._id)
+    const hasArtistInAlbum = album.artists.findIndex(savedArtist => savedArtist.equals(artist._id))
+
+    hasArtistInAlbum === -1 ? await album.artists.push(artist._id) : null
+    await album.save()
+    
+    await artist.songs.push(newSong._id)
+    const hasAlbumInArtist = artist.albums.findIndex(savedAlbum => savedAlbum.equals(album._id))
+
+    hasAlbumInArtist === -1 ? await artist.albums.push(album._id) : null
+    await artist.save()
+
     res.status(201).json(newSong)
 
   } catch (e) {
     next(e)
   }
 }
+
 
 //! Delete a song
 async function removeSong(req, res, next) {
@@ -111,7 +128,8 @@ async function editSong(req, res, next) {
   }
 }
 
-//! add a comment to songs
+
+//! Add a comment to a song
 async function createComment(req, res, next) {
   req.body.user = req.currentUser
   try {
@@ -164,7 +182,6 @@ async function deleteComment(req, res, next) {
     if (!comment) {
       throw new NotFound('No coment found.')
     }
-
     if (!req.currentUser._id.equals(comment.username)) {
       return res.status(401).send({ message: 'Unauthorized' })
     }
@@ -173,10 +190,12 @@ async function deleteComment(req, res, next) {
     comment.set(req.body)
     const savedSong = await song.save()
     res.send(savedSong)
+
   } catch (e) {
     next(e)
   }
 }
+
 
 export default {
   songsIndex,

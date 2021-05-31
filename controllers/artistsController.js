@@ -20,7 +20,6 @@ async function artistIndex(req, res, next) {
 async function artist(req, res, next) {
   try {
     const { artistId } = req.params
-    console.log(artistId)
     const artist = await Artist.findById(artistId)
       .populate('user')
       .populate('songs')
