@@ -96,7 +96,7 @@ async function seedDatabase() {
     for (let i = 0; i < 10; i++) {
       const playlist = await Playlist.create(samplePlaylist)
     }
-    console.log(playlist)
+    // console.log(playlist)
     //! adding the song to an album
     const albumToAddSongTo = await Album.findById(albums[0]._id)
     songs.map(song => {

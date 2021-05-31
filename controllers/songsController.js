@@ -2,6 +2,7 @@ import Song from '../models/songModel.js'
 import { NotFound } from '../lib/errors.js'
 
 import Artist from '../models/artistModel.js'
+import Album from '../models/albumModel.js'
 import User from '../models/userModel.js'
 
 //! GET all songs
@@ -54,15 +55,22 @@ async function getCommentsForSong(req, res, next) {
 
 //! POST a song
 async function uploadSong(req, res, next) {
-  const artist = await Artist.find()
-  req.body.leadArtist = artist[0]
+  const artist = await Artist.findById(req.body.singer)
+  const album = await Album.findById(req.body.album)
+  console.log('artist: ', artist)
+  console.log('album: ', album)
   req.body.user = req.currentUser
-  //!-------
-  //TODO - update lead artist
-  //!-------
-
   try {
     const newSong = await Song.create(req.body)
+    await album.songs.push(newSong._id)
+    const hasArtistInAlbum = album.artists.findIndex(savedArtist => savedArtist.equals(artist._id))
+    hasArtistInAlbum === -1 ? await album.artists.push(artist._id) : null
+    await album.save()
+    await artist.songs.push(newSong._id)
+    const hasAlbumInArtist = artist.albums.findIndex(savedAlbum => savedAlbum.equals(album._id))
+    console.log(hasAlbumInArtist)
+    hasAlbumInArtist === -1 ? await artist.albums.push(album._id) : null
+    await artist.save()
     res.status(201).json(newSong)
   } catch (e) {
     next(e)
