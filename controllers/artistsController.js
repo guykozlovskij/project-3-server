@@ -2,6 +2,7 @@ import Artist from '../models/artistModel.js'
 import User from '../models/userModel.js'
 import Song from '../models/songModel.js'
 import Album from '../models/albumModel.js'
+import { NotFound } from '../lib/errors.js'
 
 
 //! Get all artists
@@ -25,7 +26,7 @@ async function artist(req, res, next) {
       .populate('songs')
       .populate('albums')
     if (!artist) {
-      return res.status(404).json({ error: { message: 'Artist not found.' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
     res.status(200).json(artist)
 
@@ -59,7 +60,7 @@ async function editArtist(req, res, next) {
     const artist = await Artist.updateOne({ '_id': artistId }, req.body)
 
     if (artist.n < 1) {
-      res.status(404).json({ error: { message: 'Not found' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
     if (artist.nModified < 1) {
       res.sendStatus(304)
@@ -75,7 +76,7 @@ async function editArtist(req, res, next) {
 //! Assing song to artist
 async function addSongToArtist(req, res, next) {
   try {
-    const user = await User.find()  
+    const user = await User.find()
     //* Intial songs seeded are asigned to user1
     req.body.user = user[0]
     const { artistId, songId } = req.params
@@ -83,7 +84,7 @@ async function addSongToArtist(req, res, next) {
     const song = await Song.findById(songId)
 
     if (!artist) {
-      res.send(404).json({ error: { message: 'Artist not found' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
     }
     artist.songs.push(song)
     const artistWithNewSong = await artist.save()
@@ -107,7 +108,10 @@ async function addAlbumToArtist(req, res, next) {
     const album = await Album.findById(albumId)
 
     if (!artist) {
-      res.send(404).json({ error: { message: 'Artist not found' } })
+      throw new NotFound(`Artist with id: ${artistId} does not exist.`)
+    }
+    if (!album) {
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
     }
     artist.albums.push(album)
     const artistWithNewAlbum = await artist.save()

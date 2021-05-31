@@ -7,14 +7,18 @@ function errorHandler(err, req, res, next) {
     return res.status(400).json({ message: 'Invalid parameter given' })
   }
   if (err.name === 'NotFound') {
-    return res.sendStatus(404).json({ message: 'Not Found' })
+    return res.status(err.status).json({ error: { name: err.name, message: err.message } })
   }
   if (err.name === 'NotValid') {
     return res
-      .status(400)
+      .status(err.status)
       .json({ message: 'There was an error, Details provided are not valid' })
   }
-
+  if (err.name === 'NotAuthorized') {
+    return res.
+      status(err.status)
+      .json({ error: { name: err.name, message: err.message } })
+  }
 
   if (err.name === 'ValidationError') {
     const errors = {}
@@ -27,7 +31,7 @@ function errorHandler(err, req, res, next) {
     })
 
   }
-  
+
   res.sendStatus(500)
   next(err)
 }

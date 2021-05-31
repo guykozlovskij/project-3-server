@@ -1,4 +1,5 @@
 //! Get all albums
+import { NotAuthorized, NotFound } from '../lib/errors.js'
 import Album from '../models/albumModel.js'
 import Artist from '../models/artistModel.js'
 import Song from '../models/songModel.js'
@@ -23,13 +24,12 @@ async function album(req, res, next) {
     const album = await Album.findById(albumId)
       .populate('songs')
       .populate('artists')
+    if (!album) {
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
+    }
     album.songs = await Song.find({ album: albumId })
       .populate('singer')
       .populate('album')
-
-    if (!album) {
-      res.status(404).json({ error: { message: 'Album not found' } })
-    }
     res.status(200).json(album)
 
   } catch (err) {
@@ -44,7 +44,7 @@ async function comments(req, res, next) {
     const { albumId } = req.params
     const album = await Album.findById(albumId)
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
     }
     res.status(200).json(album.comments)
 
@@ -73,14 +73,14 @@ async function edit(req, res, next) {
     const { albumId } = req.params
     const album = await Album.findById(albumId)
     if (!album) {
-      return res.status(404).json({ error: { message: 'Not found' } })
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
     }
     if (!req.currentUser.equals(album.user._id)) {
-      return res.status(302).json({ error: { message: 'Unauthorized' } })
+      throw new NotAuthorized(`Album with id: ${albumId} does not belong to ${req.currentUser.username}`)
     }
     await Album.updateOne({ '_id': albumId }, req.body)
     if (album.nModified < 1) {
-      res.sendStatus(304)
+      return res.sendStatus(304)
     }
     res.status(200).json(await Album.findById(albumId))
 
@@ -111,7 +111,7 @@ async function songs(req, res, next) {
       .populate('singer')
       .populate('songs')
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
     }
     res.status(200).json(album.songs)
 
@@ -127,7 +127,7 @@ async function addSong(req, res, next) {
     const { albumId, songId } = req.params
     const album = await Album.findById(albumId)
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      throw new NotFound(`Album with id: ${albumId} does not exist.`)
     }
     const song = await Song.findById(songId)
     album.songs.push(song)
@@ -146,14 +146,14 @@ async function removeSong(req, res, next) {
     const { albumId, songId } = req.params
     const album = await Album.findById(albumId).populate('songs')
     if (!album) {
-      return res.status(404).json({ error: { message: 'Album not found' } })
+      throw new NotFound(`Album with id: ${albumId} not found.`)
     }
     if (!req.currentUser.equals(album.user)) {
-      return res.status(401).json({ error: { message: 'Unauthorized' } })
+      throw new NotAuthorized(`Album with id: ${albumId} does not belong to ${req.currentUser.username}`)
     }
     const song = album.songs.findIndex(song => song.equals(songId))
     if (song === -1) {
-      return res.status(404).json('Not found')
+      throw new NotFound(`Song with id: ${songId} does not exist.`)
     }
     album.songs.splice(song, 1)
     const albumWithDeletedSong = await album.save()
@@ -170,13 +170,13 @@ async function addArtist(req, res, next) {
     const { albumId, artistId } = req.params
     const album = await Album.findById(albumId)
     if (!album) {
-      res.send(404).json({ error: { message: 'Album not found' } })
+      throw new NotFound(`Album with id: ${albumId} not found.`)
     }
     const artist = await Artist.findById(artistId)
     album.artists.push(artist)
     const albumWithNewArtist = await album.save()
     res.status(200).json(albumWithNewArtist)
-    
+
   } catch (err) {
     next(err)
   }

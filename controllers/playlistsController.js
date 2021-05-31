@@ -1,3 +1,4 @@
+import { NotAuthorized, NotFound } from '../lib/errors.js'
 import Playlist from '../models/playlistModel.js'
 import Song from '../models/songModel.js'
 import User from '../models/userModel.js'
@@ -23,7 +24,7 @@ async function playlist(req, res, next) {
       .populate('users')
 
     if (!playlist) {
-      return res.status(404).json({ error: { message: 'Unauthorized' } })
+      throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
     res.status(200).json(playlist)
 
@@ -39,7 +40,7 @@ async function songs(req, res, next) {
     const { playlistId } = req.params
     const playlist = await Playlist.findById(playlistId).populate('songs')
     if (!playlist) {
-      res.send(404).json({ error: { message: 'Playlist not found' } })
+      throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
     res.status(200).json(playlist.songs)
   } catch (err) {
@@ -56,7 +57,7 @@ async function add(req, res, next) {
 
     const user = await User.findById(req.currentUser._id)
     user.playlists.push(playlist._id)
-    
+
     await user.save()
     res.status(200).json(playlist)
 
@@ -72,10 +73,10 @@ async function edit(req, res, next) {
     const { playlistId } = req.params
     const playlist = await Playlist.findById(playlistId)
     if (!playlist) {
-      return res.status(404).json({ error: { message: 'Not found' } })
+      throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
     if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
-      return res.status(302).json({ error: { message: 'Unauthorized' } })
+      throw new NotAuthorized()
     }
     const editedPlaylist = await Playlist.updateOne({ '_id': playlistId }, req.body)
     if (editedPlaylist.nModified < 1) {
@@ -95,7 +96,7 @@ async function remove(req, res, next) {
     const { playlistId } = req.params
     const playlist = await Playlist.findById(playlistId)
     if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
-      return res.status(302).json({ error: { message: 'Unauthorized' } })
+      throw new NotAuthorized()
     }
     await Playlist.deleteOne({ _id: playlist._id })
     res.sendStatus(202)
@@ -111,10 +112,10 @@ async function addSong(req, res, next) {
     const { playlistId, songId } = req.params
     const playlist = await Playlist.findById(playlistId)
     if (!playlist) {
-      res.send(404).json({ error: { message: 'Playlist not found' } })
+      throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
     if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
-      return res.status(302).json({ error: { message: 'Unauthorized' } })
+      throw new NotAuthorized()
     }
 
     const song = await Song.findById(songId)
@@ -135,14 +136,14 @@ async function removeSong(req, res, next) {
     const { playlistId, songId } = req.params
     const playlist = await Playlist.findById(playlistId).populate('songs')
     if (!playlist) {
-      return res.status(404).json({ error: { message: 'Playlist not found' } })
+      throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
     if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
-      return res.status(302).json({ error: { message: 'Unauthorized' } })
+      throw new NotAuthorized()
     }
     const song = playlist.songs.findIndex((song) => song.equals(songId))
     if (song === -1) {
-      return res.status(404).json('Not found')
+      throw new NotFound(`Song with id: ${songId} does not exist.`)
     }
     playlist.songs.splice(song, 1)
     const playlistWithDeletedSong = await playlist.save()

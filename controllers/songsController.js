@@ -1,5 +1,5 @@
 import Song from '../models/songModel.js'
-import { NotFound } from '../lib/errors.js'
+import { NotAuthorized, NotFound } from '../lib/errors.js'
 import Artist from '../models/artistModel.js'
 import Album from '../models/albumModel.js'
 
@@ -12,7 +12,7 @@ async function songsIndex(req, res, next) {
       .populate('albums')
 
     res.status(200).json(songList)
-    
+
   } catch (e) {
     next(e)
   }
@@ -71,7 +71,7 @@ async function uploadSong(req, res, next) {
 
     hasArtistInAlbum === -1 ? await album.artists.push(artist._id) : null
     await album.save()
-    
+
     await artist.songs.push(newSong._id)
     const hasAlbumInArtist = artist.albums.findIndex(savedAlbum => savedAlbum.equals(album._id))
 
@@ -158,7 +158,7 @@ async function editComment(req, res, next) {
     }
     const comment = song.comments.id(commentId)
     if (!req.currentUser._id.equals(comment.username)) {
-      return res.status(401).send({ message: 'Unauthorized' })
+      throw new NotAuthorized()
     }
     comment.set(req.body)
     const savedSong = await song.save()
@@ -183,7 +183,7 @@ async function deleteComment(req, res, next) {
       throw new NotFound('No coment found.')
     }
     if (!req.currentUser._id.equals(comment.username)) {
-      return res.status(401).send({ message: 'Unauthorized' })
+      throw new NotFound()
     }
 
     await comment.remove()
