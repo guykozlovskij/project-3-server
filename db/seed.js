@@ -90,12 +90,25 @@ async function seedDatabase() {
       user: users[0],
       type: 'public',
     })
-    
+
     const playlistUser = await User.findById(users[0])
     playlistUser.playlists.push(playlist._id)
     const savedUser = await playlistUser.save()
     console.log(savedUser)
-
+    //TODO remove later
+    const samplePlaylist = {
+      name: 'Sample',
+      text: 'sample description',
+      songs: [],
+      users: users[1],
+      user: users[1],
+      type: 'public',
+    }
+    for (let i = 0; i < 10; i++) {
+      const playlist = await Playlist.create(samplePlaylist)
+      return playlist
+    }
+    console.log(playlist)
     //! adding the song to an album
     const albumToAddSongTo = await Album.findById(albums[0]._id)
     songs.map((song) => {

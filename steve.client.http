@@ -1,7 +1,7 @@
 @baseUrl = http://localhost:4000/api
 @id = 60ad0b43940d3b5329fff809
 @commentId = 60aba3750aadd753362dfe7d
-@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGFmY2M3YjEwMWM1MzE1MzY5NzBkYjciLCJpYXQiOjE2MjIxNjA4OTAsImV4cCI6MTYyMjIwNDA5MH0.aVDPpdVfkW4QNFV1ELYtg-41mz5gflweJwBCQFktZS4
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGIzNmE2M2UwNWI1ZTk4N2M3MjBhYjQiLCJpYXQiOjE2MjI0NTA4ODMsImV4cCI6MTYyMjQ5NDA4M30.zx2l05tNSrFo7bfCegcaYIxJrirK2dny2D6coLzQiTA
 @artistId= 60accce1b5900992d875bbe8
 @songId = 60afcc7c101c531536970dbe
 @albumId = 60aba3750aadd753362dfe7a
@@ -13,6 +13,15 @@ content-type: application/json
   "email": "user1@user",
   "password": "pass"
 }
+### USERS PLAYLIST
+Get {{baseUrl}}/getusersplaylist
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "something": "something"
+}
+
 ###
 //POST {{baseUrl}}/like/Song/{{songId}}/plus
 POST {{baseUrl}}/like/Song/60afcc7c101c531536970dbe/minus

@@ -100,12 +100,18 @@ router.route('/playlist/:playlistId')
   .put(secureRoute, playlistsController.edit)
   .delete(secureRoute, playlistsController.remove)
 
-router.route('/playlist/:playlistId/songs')
-  .get(playlistsController.songs)
+// Get Current Users Playlist
+router.route('/getusersplaylist')
+  .get(secureRoute, playlistsController.getUsersPlaylist)
 
 router.route('/playlist/:playlistId/songs/:songId')
   .post(secureRoute, playlistsController.addSong)
   .delete(secureRoute, playlistsController.removeSong)
+
+router.route('/playlist/:playlistId/songs')
+  .get(playlistsController.songs)
+
+
 
 router.route('/like/:type/:id/:plusOrMinus')
   .post(secureRoute, likesController.like)
