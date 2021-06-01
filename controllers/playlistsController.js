@@ -6,6 +6,7 @@ import User from '../models/userModel.js'
 
 //! Get all playlist
 async function playlistIndex(req, res, next) {
+  console.log('GETTING API')
   try {
     const playlist = await Playlist.find().populate('users').populate('user')
     res.status(200).json(playlist)
@@ -14,8 +15,20 @@ async function playlistIndex(req, res, next) {
   }
 }
 
+// ! Get a Users Playlists
+async function getUsersPlaylist(req, res, next) {
+  try {
+    req.body.user = req.currentUser
+    const userplaylist = await Playlist.find({
+      user: req.body.user._id,
+    }).populate('songs')
+    return res.status(200).send(userplaylist)
+  } catch (e) {
+    next(e)
+  }
+}
 
-//! Get a particular playlist
+//! get a particular playlist
 async function playlist(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -27,9 +40,8 @@ async function playlist(req, res, next) {
       throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
     res.status(200).json(playlist)
-
-  } catch (err) {
-    next(err)
+  } catch (e) {
+    next(e)
   }
 }
 
@@ -54,13 +66,14 @@ async function add(req, res, next) {
   try {
     req.body.user = req.currentUser
     const playlist = await Playlist.create(req.body)
-
+    await playlist.save()
     const user = await User.findById(req.currentUser._id)
-    user.playlists.push(playlist._id)
-
-    await user.save()
-    res.status(200).json(playlist)
-
+    user.playlists.push(playlist)
+    console.log(user)
+    const savedUser = await user.save()
+    console.log(savedUser)
+    console.log('PLAYLISTS', playlist)
+    res.status(200).json(savedUser)
   } catch (e) {
     next(e)
   }
@@ -78,12 +91,14 @@ async function edit(req, res, next) {
     if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
       throw new NotAuthorized()
     }
-    const editedPlaylist = await Playlist.updateOne({ '_id': playlistId }, req.body)
+    const editedPlaylist = await Playlist.updateOne(
+      { _id: playlistId },
+      req.body
+    )
     if (editedPlaylist.nModified < 1) {
       res.sendStatus(304)
     }
     res.status(200).json(await Playlist.findById(playlistId))
-
   } catch (err) {
     next(err)
   }
@@ -108,13 +123,19 @@ async function remove(req, res, next) {
 
 //! Add a song to a playlist 
 async function addSong(req, res, next) {
+  console.log('Adding song to playlist')
   try {
     const { playlistId, songId } = req.params
+    req.body.user = req.currentUser
+    console.log('request params: ', req.params)
     const playlist = await Playlist.findById(playlistId)
+    console.log('Playlist User', playlist.user)
+    console.log('Req Current User', req.currentUser._id)
+    console.log(playlist.public)
     if (!playlist) {
       throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
-    if (!playlist.public && !playlist.users.includes(req.currentUser._id)) {
+    if (playlist.public === false && playlist.user === !req.currentUser._id ) {
       throw new NotAuthorized()
     }
 
@@ -153,8 +174,8 @@ async function removeSong(req, res, next) {
   }
 }
 
-
 export default {
+  getUsersPlaylist,
   playlistIndex,
   playlist,
   add,

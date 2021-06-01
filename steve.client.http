@@ -1,0 +1,122 @@
+@baseUrl = http://localhost:4000/api
+@id = 60ad0b43940d3b5329fff809
+@commentId = 60aba3750aadd753362dfe7d
+@token = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MGIzNmE2M2UwNWI1ZTk4N2M3MjBhYjQiLCJpYXQiOjE2MjI0NTA4ODMsImV4cCI6MTYyMjQ5NDA4M30.zx2l05tNSrFo7bfCegcaYIxJrirK2dny2D6coLzQiTA
+@artistId= 60accce1b5900992d875bbe8
+@songId = 60afcc7c101c531536970dbe
+@albumId = 60aba3750aadd753362dfe7a
+### LOGIN
+POST {{baseUrl}}/login
+content-type: application/json
+
+{
+  "email": "user1@user",
+  "password": "pass"
+}
+### USERS PLAYLIST
+Get {{baseUrl}}/getusersplaylist
+Authorization: Bearer {{token}}
+# content-type: application/json
+
+# {
+#   "something": "something"
+# }
+
+###
+//POST {{baseUrl}}/like/Song/{{songId}}/plus
+POST {{baseUrl}}/like/Song/60afcc7c101c531536970dbe/minus
+Authorization: Bearer {{token}}
+content-type: application/json
+###//All songs index.
+GET http://localhost:4000/api/songs
+###//Get a single song.
+GET http://localhost:4000/api/songs/{{id}}/ 
+###//Get all comments for a song.
+GET http://localhost:4000/api/songs/{{id}}/comments
+###//Upload a song
+POST http://localhost:4000/api/songs/
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "Awesome New Song",
+  "year": "2021"
+}
+###//Delete a song
+DELETE http://localhost:4000/api/songs/{{id}}/
+Authorization: Bearer {{token}}
+###//Edit Song
+PUT http://localhost:4000/api/songs/{{id}}/
+Authorization: Bearer {{token}}  
+content-type: application/json
+
+{
+  "name": "This song is from future and edited",
+  "year": "2029"
+}
+###//CREATE SONG COMMENT 
+POST  http://localhost:4000/api/songs/{{id}}/comments
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "text": "NEW to be updated"
+}
+###//Update Comment 
+PUT http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "text": "THE COMMENT HAS BEEN UPDATED"
+}
+###
+//Delete comment 
+DELETE http://localhost:4000/api/songs/{{id}}/comments/{{commentId}}
+Authorization: Bearer {{token}}
+
+
+//---------------------------------------------------------------------------------------------
+###//GET all ARTISTS
+GET http://localhost:4000/api/artists
+###//Get SINGLE ARTIST
+GET http://localhost:4000/api/artists/{{artistId}}
+
+
+###
+//Create artist
+POST http://localhost:4000/api/artists/
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "NEWEST Artist"
+}
+
+###
+//Update artist 
+PUT http://localhost:4000/api/artists/{{artistId}}
+Authorization: Bearer {{token}}
+content-type: application/json
+
+{
+  "name": "UPD Artist again"
+}
+
+
+###
+//Add song to artist 
+POST http://localhost:4000/api/artists/{{artistId}}/songs/{{songId}}
+Authorization: Bearer {{token}}
+
+
+###
+//Add album to artist 
+POST http://localhost:4000/api/artists/{{artistId}}/albums/{{albumId}}
+Authorization: Bearer {{token}}
+
+
+###
+//DELETE artist
+DELETE http://localhost:4000/api/artists/{{artistId}}
+Authorization: Bearer {{token}}
