@@ -9,7 +9,7 @@ async function songsIndex(req, res, next) {
   try {
     const songList = await Song.find()
       .populate('singer')
-      .populate('albums')
+      .populate('album')
 
     res.status(200).json(songList)
 
@@ -26,7 +26,7 @@ async function showSingleSong(req, res, next) {
     const song = await Song.findById(id)
       .populate('comments')
       .populate('artists')
-      .populate('albums')
+      .populate('album')
 
     if (!song) {
       throw new NotFound('No song found!')
