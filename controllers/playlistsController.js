@@ -66,14 +66,12 @@ async function songs(req, res, next) {
 async function add(req, res, next) {
   try {
     req.body.user = req.currentUser
+    req.body.users = req.currentUser
     const playlist = await Playlist.create(req.body)
     await playlist.save()
     const user = await User.findById(req.currentUser._id)
     user.playlists.push(playlist)
-    console.log(user)
     const savedUser = await user.save()
-    console.log(savedUser)
-    console.log('PLAYLISTS', playlist)
     res.status(200).json(savedUser)
   } catch (e) {
     next(e)
