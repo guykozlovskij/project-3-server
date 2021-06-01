@@ -1,12 +1,12 @@
 export default [
   {
-    name: 'Album1',
+    name: 'Ben\'s Classics',
     year: '2010-01-01',
     length: 0,
     songs: [],
   },
   {
-    name: 'Album2',
+    name: 'Yesterday',
     year: '2010-01-02',
     length: 0,
     songs: [],

@@ -138,7 +138,7 @@ export default [
     comments: [],
   }, {
     name: 'piano moment',
-    genre: 'Cinematica',
+    genre: 'Cinematic',
     cover: 'https://www.bensound.com/bensound-img/pianomoment.jpg',
     year: '2021',
     length: 110,
@@ -146,7 +146,7 @@ export default [
     comments: [],
   }, {
     name: 'deep blue',
-    genre: 'Cinematica',
+    genre: 'Cinematic',
     cover: 'https://www.bensound.com/bensound-img/deepblue.jpg',
     year: '2021',
     length: 228,
@@ -154,7 +154,7 @@ export default [
     comments: [],
   }, {
     name: 'new dawn',
-    genre: 'Cinematica',
+    genre: 'Cinematic',
     cover: 'https://www.bensound.com/bensound-img/newdawn.jpg',
     year: '2021',
     length: 313,
@@ -162,7 +162,7 @@ export default [
     comments: [],
   }, {
     name: 'photo album',
-    genre: 'Cinematica',
+    genre: 'cinematic',
     cover: 'https://www.bensound.com/bensound-img/photoalbum.jpg',
     year: '2021',
     length: 196,
@@ -170,7 +170,7 @@ export default [
     comments: [],
   }, {
     name: 'evolution',
-    genre: 'Cinematica',
+    genre: 'cinematic',
     cover: 'https://www.bensound.com/bensound-img/evolution.jpg',
     year: '2021',
     length: 165,
@@ -178,7 +178,7 @@ export default [
     comments: [],
   }, {
     name: 'adventure',
-    genre: 'Cinematica',
+    genre: 'cinematic',
     cover: 'https://www.bensound.com/bensound-img/adventure.jpg',
     year: '2021',
     length: 179,
@@ -186,7 +186,7 @@ export default [
     comments: [],
   }, {
     name: 'birth of a hero',
-    genre: 'Cinematica',
+    genre: 'cinematic',
     cover: 'https://www.bensound.com/bensound-img/birthofahero.jpg',
     year: '2021',
     length: 229,
@@ -194,7 +194,7 @@ export default [
     comments: [],
   }, {
     name: 'memories',
-    genre: 'Cinematica',
+    genre: 'cinematic',
     cover: 'https://www.bensound.com/bensound-img/memories.jpg',
     year: '2021',
     length: 230,
@@ -516,7 +516,7 @@ export default [
     comments: [],
   }, {
     name: 'instinct',
-    genre: 'Cineamatic',
+    genre: 'Cinematic',
     cover: 'https://www.bensound.com/bensound-img/instinct.jpg',
     year: '2021',
     length: 204,

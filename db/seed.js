@@ -54,18 +54,34 @@ async function seedDatabase() {
 
 
     //! Seed songs
-    const songsWithUser = songData.map((song) => {
-      return {
-        ...song,
+    const songsWithUserAndBensoundAlbum = Array()
+    const songsWithUserAndYesterdayAlbum = Array()
+
+    for (let i = 0; i < Math.floor((songData.length / 2)); i++) {
+      songsWithUserAndBensoundAlbum.push({
+        ...songData[i],
         user: users[0]._id,
         singer: artists[0],
         album: albums[0],
         comments: commentToAdd,
         isDeleted: false,
-      }
-    })
-    const songs = await Song.create(songsWithUser)
-    console.log(`${songs.length} songs have been added`)
+      })
+    }
+    for (let i = Math.floor((songData.length / 2)); i < songData.length; i++) {
+      songsWithUserAndYesterdayAlbum.push({
+        ...songData[i],
+        user: users[0]._id,
+        singer: artists[0],
+        album: albums[1],
+        comments: commentToAdd,
+        isDeleted: false,
+      })
+    }
+
+    const songsBensound = await Song.create(songsWithUserAndBensoundAlbum)
+    const songsYesterday = await Song.create(songsWithUserAndYesterdayAlbum)
+    console.log(`${songsBensound.length} songs have been added`)
+    console.log(`${songsYesterday.length} songs have been added`)
 
 
     //! Create a playlist and add songs to it
@@ -73,7 +89,7 @@ async function seedDatabase() {
     const playlist = await Playlist.create({
       name: 'Bensound Collection',
       text: 'Mix songs from Bensound',
-      songs: songs,
+      songs: songsBensound,
       users: users[0],
       user: users[0],
       type: 'public',
@@ -85,21 +101,29 @@ async function seedDatabase() {
 
 
     //! Adding songs to an album
-    const albumToAddSongTo = await Album.findById(albums[0]._id)
-    songs.map((song) => {
-      albumToAddSongTo.songs.push(song._id)
-      albumToAddSongTo.comments.push(commentToAdd)
-    })
-    await albumToAddSongTo.save()
+    const bensoundAlbum = await Album.findById(albums[0]._id)
+    const yesterdayAlbum = await Album.findById(albums[1]._id)
+    for (let i = 0; i < songsBensound.length; i++) {
+      bensoundAlbum.songs.push(songsBensound[i]._id)
+    }
+    for (let i = 0; i < songsYesterday.length; i++) {
+      yesterdayAlbum.songs.push(songsYesterday[i]._id)
+    }
 
+    await bensoundAlbum.save()
+    await yesterdayAlbum.save()
 
     //! Adding songs to an artist
     const artistToAddSongsTo = await Artist.findById(artists[0]._id)
-    songs.map((song) => {
+    songsYesterday.map((song) => {
       artistToAddSongsTo.songs.push(song._id)
       artistToAddSongsTo.comments.push(commentToAdd)
     })
-    
+    songsBensound.map((song) => {
+      artistToAddSongsTo.songs.push(song._id)
+      artistToAddSongsTo.comments.push(commentToAdd)
+    })
+
 
     //! Adding albums to an artist
     albums.map((album) => {
@@ -110,7 +134,10 @@ async function seedDatabase() {
 
     //! Adding a song to user addedSongs
     const userWithSong = await User.findById(users[0]._id)
-    songs.map((song) => {
+    songsBensound.map((song) => {
+      userWithSong.addedSongs.push(song._id)
+    })
+    songsYesterday.map((song) => {
       userWithSong.addedSongs.push(song._id)
     })
     await userWithSong.save()
