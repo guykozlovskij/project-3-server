@@ -15,9 +15,7 @@ function errorHandler(err, req, res, next) {
       .json({ message: 'There was an error, Details provided are not valid' })
   }
   if (err.name === 'NotAuthorized') {
-    return res.
-      status(err.status)
-      .json({ error: { name: err.name, message: err.message } })
+    return res.status(err.status).send({ error: { name: err.name, message: err.message } })
   }
 
   if (err.name === 'ValidationError') {

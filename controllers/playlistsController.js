@@ -35,6 +35,7 @@ async function playlist(req, res, next) {
     const playlist = await Playlist.findById(playlistId)
       .populate('songs')
       .populate('users')
+      .populate('user')
 
     if (!playlist) {
       throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
@@ -129,13 +130,14 @@ async function addSong(req, res, next) {
     req.body.user = req.currentUser
     console.log('request params: ', req.params)
     const playlist = await Playlist.findById(playlistId)
-    console.log('Playlist User', playlist.user)
-    console.log('Req Current User', req.currentUser._id)
-    console.log(playlist.public)
+    // console.log('Playlist User', typeof playlist.user)
+    // console.log('Req Current User', typeof req.currentUser._id)
+    // console.log(playlist.public)
+    // console.log('current user owns playlist?', playlist.user._id.equals(req.currentUser._id))
     if (!playlist) {
       throw new NotFound(`Playlist with id: ${playlistId} does not exist.`)
     }
-    if (playlist.public === false && playlist.user === !req.currentUser._id ) {
+    if (!playlist.public && !playlist.user._id.equals(req.currentUser._id)) {
       throw new NotAuthorized()
     }
 
