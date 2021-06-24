@@ -1,6 +1,7 @@
 import mongoose from 'mongoose'
-import { dbURL } from '../config/environment.js'
+// import { dbURL } from '../config/environment.js'
 
+const dbURL = process.env.DB_URL
 //! Connecting to the database
 export default function connectToDb() {
 
