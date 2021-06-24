@@ -1,9 +1,9 @@
 import User from '../models/userModel.js'
 import { NotValid } from '../lib/errors.js'
-// import { secret } from '../config/environment.js'
+import { secret } from '../config/environment.js'
 import jwt from 'jsonwebtoken'
 
-const secret = process.env.SECRET
+
 
 //! Register a user
 async function register(req, res, next) {

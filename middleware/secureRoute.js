@@ -1,9 +1,7 @@
 import jwt from 'jsonwebtoken'
 import User from '../models/userModel.js'
-// import { secret } from '../config/environment.js'
+import { secret } from '../config/environment.js'
 import { NotAuthorized } from '../lib/errors.js'
-
-const secret = process.env.SECRET
 
 export default function secureRoute(req, res, next) {
   const rawToken = req.headers.authorization
