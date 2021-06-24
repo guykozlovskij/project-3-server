@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx nodemon server.js",
-    "test": "node --experimental-vm-modules --no-warnings  node_modules/.bin/jest -i --verbose --watch"
+    "test": "node --experimental-vm-modules --no-warnings  node_modules/.bin/jest -i --verbose --watch",
+    "start": "node server.js"
   },
   "author": "",
   "license": "ISC",
