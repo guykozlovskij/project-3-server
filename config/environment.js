@@ -1,4 +1,8 @@
-export const dbURL = 'mongodb://localhost/musicdb'
 
-//JWT Secret Token
-export const secret = 'bowlrainbowsheddrivegear'
+import dotenv from 'dotenv'
+dotenv.config()
+
+export const dbURI =
+  process.env.DB_URI || 'mongodb://localhost/musicdb'
+export const port = process.env.PORT || 4000
+export const secret = process.env.SECRET || 'bowlrainbowsheddrivegear'

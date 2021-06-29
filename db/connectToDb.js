@@ -1,5 +1,5 @@
 import mongoose from 'mongoose'
-import { dbURL } from '../config/environment.js'
+import { dbURI } from '../config/environment.js'
 
 //! Connecting to the database
 export default function connectToDb() {
@@ -10,5 +10,5 @@ export default function connectToDb() {
     useUnifiedTopology: true,
     useFindAndModify: false,
   }
-  return mongoose.connect(dbURL, options)
+  return mongoose.connect(dbURI, options)
 }
