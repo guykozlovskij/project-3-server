@@ -4,7 +4,7 @@ import { secret } from '../config/environment.js'
 import jwt from 'jsonwebtoken'
 
 
-//! Register a user
+//* Registering a user
 async function register(req, res, next) {
   try {
     const newUser = await User.create(req.body)
@@ -15,7 +15,7 @@ async function register(req, res, next) {
 }
 
 
-//!Login registered user
+//* Logging-in  registered user
 async function login(req, res, next) {
   try {
     const user = await User.findOne({ email: req.body.email })
@@ -31,7 +31,7 @@ async function login(req, res, next) {
       )
     }
 
-    // Create jwt and send to user
+    // Creating a jwt and send to user
     const token = jwt.sign(
       { userId: user._id }, 
       secret,

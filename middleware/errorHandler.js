@@ -3,17 +3,21 @@ function errorHandler(err, req, res, next) {
   console.log(err.name)
   console.log(err)
 
+
   if (err.name === 'CastError') {
     return res.status(400).json({ message: 'Invalid parameter given' })
   }
+
   if (err.name === 'NotFound') {
     return res.status(err.status).json({ error: { name: err.name, message: err.message } })
   }
+
   if (err.name === 'NotValid') {
     return res
       .status(err.status)
       .json({ message: 'There was an error, Details provided are not valid' })
   }
+  
   if (err.name === 'NotAuthorized') {
     return res.status(err.status).send({ error: { name: err.name, message: err.message } })
   }

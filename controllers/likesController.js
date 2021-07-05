@@ -5,7 +5,6 @@ import User from '../models/userModel.js'
 import Playlist from '../models/playlistModel.js'
 import { NotFound } from '../lib/errors.js'
 
-
 async function like(req, res, next) {
   try {
     let thingToLike

@@ -1,11 +1,10 @@
-//! Get all albums
 import { NotAuthorized, NotFound } from '../lib/errors.js'
 import Album from '../models/albumModel.js'
 import Artist from '../models/artistModel.js'
 import Song from '../models/songModel.js'
 
 
-//! Get all albums
+//* Getting all albums
 async function albumIndex(req, res, next) {
   try {
     const album = await Album.find().populate('leadArtist')
@@ -17,7 +16,7 @@ async function albumIndex(req, res, next) {
 }
 
 
-//! Find a particualar album
+//* Finding a particular album
 async function album(req, res, next) {
   try {
     const { albumId } = req.params
@@ -38,7 +37,7 @@ async function album(req, res, next) {
 }
 
 
-//! Get all comments for a particular album 
+//* Getting all comments for a particular album 
 async function comments(req, res, next) {
   try {
     const { albumId } = req.params
@@ -54,7 +53,7 @@ async function comments(req, res, next) {
 }
 
 
-//! Create an album
+//* Creating an album
 async function add(req, res, next) {
   try {
     req.body.user = req.currentUser
@@ -67,7 +66,7 @@ async function add(req, res, next) {
 }
 
 
-//! Edit an album
+//* Editing an album
 async function edit(req, res, next) {
   try {
     const { albumId } = req.params
@@ -90,7 +89,7 @@ async function edit(req, res, next) {
 }
 
 
-//! Delete an album
+//* Deleting an album
 async function remove(req, res, next) {
   try {
     const { albumId } = req.params
@@ -103,7 +102,7 @@ async function remove(req, res, next) {
 }
 
 
-//! Get all songs for an album
+//* Get all songs for an album
 async function songs(req, res, next) {
   try {
     const { albumId } = req.params
@@ -121,7 +120,7 @@ async function songs(req, res, next) {
 }
 
 
-//! Add a song to an album
+//* Adding a song to an album
 async function addSong(req, res, next) {
   try {
     const { albumId, songId } = req.params
@@ -140,7 +139,7 @@ async function addSong(req, res, next) {
 }
 
 
-//! Remove a song from an album
+//* Removing a song from an album
 async function removeSong(req, res, next) {
   try {
     const { albumId, songId } = req.params
@@ -164,7 +163,7 @@ async function removeSong(req, res, next) {
   }
 }
 
-//! Add artist to an album
+//* Adding artist to an album
 async function addArtist(req, res, next) {
   try {
     const { albumId, artistId } = req.params

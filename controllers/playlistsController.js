@@ -4,7 +4,7 @@ import Song from '../models/songModel.js'
 import User from '../models/userModel.js'
 
 
-//! Get all playlist
+//* Getting all playlist
 async function playlistIndex(req, res, next) {
   try {
     const playlist = await Playlist.find().populate('users').populate('user')
@@ -14,7 +14,7 @@ async function playlistIndex(req, res, next) {
   }
 }
 
-// ! Get a Users Playlists
+//* Getting a User's playlists
 async function getUsersPlaylist(req, res, next) {
   try {
     req.body.user = req.currentUser
@@ -27,7 +27,7 @@ async function getUsersPlaylist(req, res, next) {
   }
 }
 
-//! get a particular playlist
+//* Getting a particular playlist
 async function playlist(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -46,7 +46,7 @@ async function playlist(req, res, next) {
 }
 
 
-//! Get all songs from playlist
+//* Getting all songs from playlist
 async function songs(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -61,7 +61,7 @@ async function songs(req, res, next) {
 }
 
 
-//! Create a playlist
+//* Creating a playlist
 async function add(req, res, next) {
   try {
     req.body.user = req.currentUser
@@ -78,7 +78,7 @@ async function add(req, res, next) {
 }
 
 
-//! Edit an playlist
+//* Editing an playlist
 async function edit(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -103,7 +103,7 @@ async function edit(req, res, next) {
 }
 
 
-//! Delete a playlist 
+//* Deleting a playlist 
 async function remove(req, res, next) {
   try {
     const { playlistId } = req.params
@@ -119,7 +119,7 @@ async function remove(req, res, next) {
 }
 
 
-//! Add a song to a playlist 
+//* Adding a song to a playlist 
 async function addSong(req, res, next) {
   console.log('Adding song to playlist')
   try {
@@ -150,7 +150,7 @@ async function addSong(req, res, next) {
 }
 
 
-//! Remove a song from a playlist
+//* Removing a song from a playlist
 async function removeSong(req, res, next) {
   try {
     const { playlistId, songId } = req.params

@@ -11,7 +11,7 @@ import likesController from '../controllers/likesController.js'
 
 const router = express.Router()
 
-//! User routes
+//* User routes
 router.route('/register')
   .post(userController.register)
 
@@ -19,7 +19,7 @@ router.route('/login')
   .post(userController.login)
 
 
-//! Album routes
+//* Album routes
 router.route('/albums')
   .get(albumsController.albumIndex)
   .post(secureRoute, albumsController.add)
@@ -29,18 +29,18 @@ router.route('/albums/:albumId')
   .put(secureRoute, albumsController.edit)
   .delete(secureRoute, albumsController.remove)
 
-// Song routes in albums
+//? Song routes in albums
 router.route('/albums/:albumId/songs')
   .get(albumsController.songs)
 router.route('/albums/:albumId/songs/:songId')
   .post(secureRoute, albumsController.addSong)
   .delete(secureRoute, albumsController.removeSong)
-// Add artist to an album
+//? Add artist to an album
 router.route('/albums/:albumId/artists/:artistId')
   .post(secureRoute, albumsController.addArtist)
 
 
-//! Songs routes
+//* Songs routes
 router.route('/songs/')
   .get(songController.songsIndex)
   .post(secureRoute, songController.uploadSong)
@@ -51,7 +51,7 @@ router.route('/songs/:id')
   .put(secureRoute, songController.editSong)
 
 
-//! Comment Routes
+//* Comment Routes
 router.route('/songs/:id/comments')
   .get(songController.getCommentsForSong)
   .post(secureRoute, songController.createComment)
@@ -61,7 +61,7 @@ router.route('/songs/:id/comments/:commentId')
   .delete(secureRoute, songController.deleteComment)
 
 
-//! Artist routes
+//* Artist routes
 router.route('/artists/')
   .get(artistsController.artistIndex)
   .post(secureRoute, artistsController.createArtist)
@@ -78,7 +78,7 @@ router.route('/artists/:artistId/albums/:albumId')
   .post(secureRoute, artistsController.addAlbumToArtist)
 
 
-//! Playlist routes
+//* Playlist routes
 router.route('/playlist')
   .get(playlistsController.playlistIndex)
   .post(secureRoute, playlistsController.add)
@@ -88,7 +88,7 @@ router.route('/playlist/:playlistId')
   .put(secureRoute, playlistsController.edit)
   .delete(secureRoute, playlistsController.remove)
 
-// Get Current Users Playlist
+//? Get Current Users Playlist
 router.route('/getusersplaylist')
   .get(secureRoute, playlistsController.getUsersPlaylist)
 

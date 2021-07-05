@@ -5,7 +5,7 @@ import Album from '../models/albumModel.js'
 import { NotFound } from '../lib/errors.js'
 
 
-//! Get all artists
+//* Getting all artists
 async function artistIndex(req, res, next) {
   try {
     const artist = await Artist.find()
@@ -17,7 +17,7 @@ async function artistIndex(req, res, next) {
 }
 
 
-//! Get a particular artist 
+//* Getting a particular artist 
 async function artist(req, res, next) {
   try {
     const { artistId } = req.params
@@ -36,7 +36,7 @@ async function artist(req, res, next) {
 }
 
 
-//! Create an artist
+//* Creating an artist
 async function createArtist(req, res, next) {
   try {
     const user = await User.find()
@@ -50,7 +50,7 @@ async function createArtist(req, res, next) {
 }
 
 
-//! Edit an artist
+//* Editing an artist
 async function editArtist(req, res, next) {
   try {
     const user = await User.find()
@@ -73,11 +73,11 @@ async function editArtist(req, res, next) {
 }
 
 
-//! Assing song to artist
+//* Assigning song to artist
 async function addSongToArtist(req, res, next) {
   try {
     const user = await User.find()
-    //* Intial songs seeded are asigned to user1
+    //* Initial songs seeded are assigned to user1
     req.body.user = user[0]
     const { artistId, songId } = req.params
     const artist = await Artist.findById(artistId)
@@ -96,7 +96,7 @@ async function addSongToArtist(req, res, next) {
 }
 
 
-//! Assing albums to artist 
+//* Assigning albums to artist 
 async function addAlbumToArtist(req, res, next) {
   try {
     const user = await User.find()
@@ -123,7 +123,7 @@ async function addAlbumToArtist(req, res, next) {
 }
 
 
-//! elete an artist
+//* Deleting an artist
 async function removeArtist(req, res, next) {
   try {
     const { artistId } = req.params

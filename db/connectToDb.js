@@ -1,7 +1,7 @@
 import mongoose from 'mongoose'
 import { dbURI } from '../config/environment.js'
 
-//! Connecting to the database
+//* Connecting to the database
 export default function connectToDb() {
 
   const options = {

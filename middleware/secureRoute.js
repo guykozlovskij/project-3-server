@@ -3,6 +3,7 @@ import User from '../models/userModel.js'
 import { secret } from '../config/environment.js'
 import { NotAuthorized } from '../lib/errors.js'
 
+
 export default function secureRoute(req, res, next) {
   const rawToken = req.headers.authorization
   if (!rawToken || !rawToken.startsWith('Bearer')) {

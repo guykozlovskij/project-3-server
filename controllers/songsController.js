@@ -4,7 +4,7 @@ import Artist from '../models/artistModel.js'
 import Album from '../models/albumModel.js'
 
 
-//! Get all songs
+//* Getting all songs
 async function songsIndex(req, res, next) {
   try {
     const songList = await Song.find()
@@ -19,7 +19,7 @@ async function songsIndex(req, res, next) {
 }
 
 
-//! Get a particular song
+//* Getting a particular song
 async function showSingleSong(req, res, next) {
   try {
     const id = req.params.id
@@ -39,7 +39,7 @@ async function showSingleSong(req, res, next) {
 }
 
 
-//! Get all comments for a particular song
+//* Getting all comments for a particular song
 async function getCommentsForSong(req, res, next) {
   try {
     const id = req.params.id
@@ -58,7 +58,7 @@ async function getCommentsForSong(req, res, next) {
 }
 
 
-//! Create/upload a song
+//* Creating/uploading a song
 async function uploadSong(req, res, next) {
   const artist = await Artist.findById(req.body.singer)
   const album = await Album.findById(req.body.album)
@@ -86,7 +86,7 @@ async function uploadSong(req, res, next) {
 }
 
 
-//! Delete a song
+//* Deleting a song
 async function removeSong(req, res, next) {
   try {
     const currentUserId = req.currentUser._id
@@ -106,7 +106,7 @@ async function removeSong(req, res, next) {
 }
 
 
-//! Edit a song
+//* Editing a song
 async function editSong(req, res, next) {
   try {
     const currentUserId = req.currentUser._id
@@ -129,7 +129,7 @@ async function editSong(req, res, next) {
 }
 
 
-//! Add a comment to a song
+//* Adding a comment to a song
 async function createComment(req, res, next) {
   req.body.user = req.currentUser
   try {
@@ -147,7 +147,7 @@ async function createComment(req, res, next) {
   }
 }
 
-//! Edit a song comment
+//* Editing a song comment
 async function editComment(req, res, next) {
   try {
     const { commentId } = req.params
@@ -169,7 +169,7 @@ async function editComment(req, res, next) {
   }
 }
 
-//! Delete a song comment
+//* Deleting a song comment
 async function deleteComment(req, res, next) {
   try {
     const { commentId } = req.params
@@ -180,7 +180,7 @@ async function deleteComment(req, res, next) {
       throw new NotFound('No song found.')
     }
     if (!comment) {
-      throw new NotFound('No coment found.')
+      throw new NotFound('No comment found.')
     }
     if (!req.currentUser._id.equals(comment.username)) {
       throw new NotFound()

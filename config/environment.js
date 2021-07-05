@@ -1,3 +1,5 @@
+//* Set-up to ensure the code uses the correct values for either development or online deployment.
+
 import dotenv from 'dotenv'
 dotenv.config()
 export const env = process.env.NODE_ENV || 'dev'

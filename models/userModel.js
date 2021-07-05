@@ -5,7 +5,7 @@ import bcrypt from 'bcrypt'
 import userSchema from './userSchema.js'
 
 
-//! Hash the password
+//* Hashing the password
 userSchema.pre('save', function encryptPassword(next) {
   if (this.isModified('password')) {
     this.password = bcrypt.hashSync(this.password, bcrypt.genSaltSync())
@@ -14,13 +14,13 @@ userSchema.pre('save', function encryptPassword(next) {
 })
 
 
-//! Compare hashed password given with that stored in the DB
+//* Comparing hashed password given with that stored in the DB
 userSchema.methods.validatePassword = function validatePassword(password) {
   return bcrypt.compareSync(password, this.password)
 }
 
 
-//! Virtual password
+//* Virtual password
 userSchema
   .virtual('passwordConfirmation')
   .set(function setPasswordConfirmation(passwordConfirmation) {
