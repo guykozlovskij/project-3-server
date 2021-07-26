@@ -128,7 +128,7 @@ There are also controllers responsible for each of the RESTful actions.
 
 ## Frontend
 
-The front end consists mainly of the song list and song component (written by Steven) which is rendered in different ways throughout the application. The song data is fetched in the `songIndex` file in the useEffect and passed down to the `songList` and `songListItem`.
+The frontend was mostly done by Steven. The main compoenents are the song list and song component which is rendered in different ways throughout the application. The song data is fetched in the `songIndex` file in the useEffect and passed down to the `songList` and `songListItem`.
 
 ```javascript
 React.useEffect(() => {
@@ -213,16 +213,27 @@ function PlayBtn({ name, singer, cover, musicSrc }) {
 ## Screenshots
 
 Songs Page
+
 ![song page](./screenshots/song_page.PNG)
+
 Album Page
+
 ![song page](./screenshots/album_page.PNG)
+
 Playlist Page
+
 ![song page](./screenshots/playlist_page.PNG)
+
 Song Upload Page
+
 ![Upload page](./screenshots/upload_page.PNG)
+
 Create Album
+
 ![Create album](./screenshots/create_album.PNG)
+
 Create Playlist
+
 ![Create playlist](./screenshots/create_playlist.PNG)
 
 ## Bugs
@@ -240,7 +251,7 @@ I guess one of the major wins is that we got the project to a usable state by th
 
 ## Challenges
 
-The biggest challenge in this project was teamwork, it was my first time doing a project while being part of a team and there were a lot of things I did wrong to that end. In hindsight I think it was overall a positive experience but I could have definitely done better.
+The biggest challenge in this project was teamwork, it was my first time doing a project while being part of a team and a lot of things like scheduling my tasks, tracking my tasks and ticking off my tasks I did not do, they are important things to do in a team project that going forward I definitely will implement. In hindsight I think it was overall a positive experience but I could have definitely done better.
 
 ## Key Learnings
 
