@@ -64,48 +64,48 @@ We as a group wanted to keep things simple for the design as we had a lot to do 
 
 ---
 
-![Homepage prototype](./screenshots/homepage_proto.PNG "Homepage Prototype")
+![Homepage prototype](./screenshots/homepage_proto.png "Homepage Prototype")
 
 #### Songs Page
 
 ---
 
-![Songs Page prototype](./screenshots/songspage_proto.PNG "Songs Page Prototype")
+![Songs Page prototype](./screenshots/songspage_proto.png "Songs Page Prototype")
 
 #### Single Song item component prototype
 
 ---
 
-![Single Song prototype](./screenshots/single_song_item_proto.PNG "Single Song Prototype")
+![Single Song prototype](./screenshots/single_song_item_proto.png "Single Song Prototype")
 
 ## Backend
 
 For the backend we started by creating all the required models as a group, to do that we planned all the models our website has as show below:
 
-![models](./screenshots/db_models1.PNG)
-![models](./screenshots/db_models2.PNG)
+![models](./screenshots/db_models1.png)
+![models](./screenshots/db_models2.png)
 
 Then we coded all the models in the backend as a group, I am not going to show all of them here, but this is the song model:
 
 ```javascript
 const songSchema = new mongoose.Schema({
- name: { type: String, required: true },
- genre: { type: String },
- singer: { type: mongoose.Schema.ObjectId, ref: "Artist", required: true },
- cover: {
-   type: String,
-   default: "https://image.flaticon.com/icons/png/512/26/26433.png",
- },
- year: { type: Date, required: true },
- source: { type: String },
- musicSrc: { type: String },
- length: { type: Number },
- album: { type: mongoose.Schema.ObjectId, ref: "Album" },
- artists: [{ type: mongoose.Schema.ObjectId, ref: "Artist" }],
- comments: [commentSchema],
- likesCount: { type: Number, default: 0 },
- user: { type: mongoose.Schema.ObjectId, ref: "User" },
- isDeleted: { type: Boolean, default: false, required: true },
+name: { type: String, required: true },
+genre: { type: String },
+singer: { type: mongoose.Schema.ObjectId, ref: "Artist", required: true },
+cover: {
+  type: String,
+  default: "https://image.flaticon.com/icons/png/512/26/26433.png",
+},
+year: { type: Date, required: true },
+source: { type: String },
+musicSrc: { type: String },
+length: { type: Number },
+album: { type: mongoose.Schema.ObjectId, ref: "Album" },
+artists: [{ type: mongoose.Schema.ObjectId, ref: "Artist" }],
+comments: [commentSchema],
+likesCount: { type: Number, default: 0 },
+user: { type: mongoose.Schema.ObjectId, ref: "User" },
+isDeleted: { type: Boolean, default: false, required: true },
 });
 ```
 
@@ -114,13 +114,13 @@ We also added functions like adding an album to the database, for that we made c
 ```javascript
 //! Create an album
 async function add(req, res, next) {
- try {
-   req.body.user = req.currentUser;
-   const album = await Album.create(req.body);
-   res.status(200).json(album);
- } catch (err) {
-   next(err);
- }
+try {
+  req.body.user = req.currentUser;
+  const album = await Album.create(req.body);
+  res.status(200).json(album);
+} catch (err) {
+  next(err);
+}
 }
 ```
 
@@ -128,20 +128,20 @@ There are also controllers responsible for each of the RESTful actions.
 
 ## Frontend
 
-The frontend was mostly done by Steven. The main compoenents are the song list and song component which is rendered in different ways throughout the application. The song data is fetched in the `songIndex` file in the useEffect and passed down to the `songList` and `songListItem`.
+The frontend was mostly done by Steven. The main components are the song list and song component which is rendered in different ways throughout the application. The song data is fetched in the `songIndex` file in the useEffect and passed down to the `songList` and `songListItem`.
 
 ```javascript
 React.useEffect(() => {
- const getData = async () => {
-   try {
-     const response = await getAllSongs();
-     setAllSongs(response.data);
-   } catch (err) {
-     console.log(err);
-     history.push("./error");
-   }
- };
- getData();
+const getData = async () => {
+  try {
+    const response = await getAllSongs();
+    setAllSongs(response.data);
+  } catch (err) {
+    console.log(err);
+    history.push("./error");
+  }
+};
+getData();
 }, [setAllSongs, history]);
 ```
 
@@ -154,87 +154,126 @@ Which then is passed down to the `songList` component.
 Which then iterates through all the songs and calls each of them by using the songListItem component.
 
 ```javascript
- 
 {filteredSongList ? (
-           filteredSongList.map((song) => (
-             <div key={song._id} className="column is-full">
-               <SongListItem  {...song} />
-             </div>
-           ))
-         ) : (
-           <div id="loader">
-             <Loader
-               type="Puff"
-               color="#00BFFF"
-               height={150}
-               width={150}
-               timeout={3000} //3 secs
-             />
-           </div>
-         )}
-       </div>
-     </div>
-   </div>
- )
+          filteredSongList.map((song) => (
+            <div key={song._id} className="column is-full">
+              <SongListItem  {...song} />
+            </div>
+          ))
+        ) : (
+          <div id="loader">
+            <Loader
+              type="Puff"
+              color="#00BFFF"
+              height={150}
+              width={150}
+              timeout={3000} //3 secs
+            />
+          </div>
+        )}
+      </div>
+    </div>
+  </div>
+)
 }
- 
 ```
 
 This results in this list of songs:
 
-![song list](./screenshots/song_list.PNG)
+![song list](./screenshots/song_list.png)
 
 The `songListItem` has a further child component called `ControlBar`.
 
-The `controlBar` component further has a playBtn component which the song when clicked, it works by calling the `updateAudioQueue` function which updates the `audioQueue` state in `App.js`, which in turn passes that list to the `react-jinke-music-player`, which is the third party player we used to play all the audio.
+The `controlBar` component further has a playBtn component which the song when clicked, it works by calling the `updateAudioQueue` function which updates the `audioQueue` state in `App.js`, which in turn passes that list to the `react-jinke-music-player`, which is the third party player we used to play all the audio. The functionality of the playBtn below was implemented by me.
 
 ```javascript
 function PlayBtn({ name, singer, cover, musicSrc }) {
- const { updateAudioQueue } = React.useContext(AudioQueueContext);
- const handleClick = () => {
-   const song = {
-     name: name,
-     singer: singer.name,
-     cover: cover,
-     musicSrc: musicSrc,
-   };
- 
-   updateAudioQueue([song], true);
- };
- 
- return (
-   <button className="button" onClick={handleClick}>
-     ▶️
-   </button>
- );
+const { updateAudioQueue } = React.useContext(AudioQueueContext);
+const handleClick = () => {
+  const song = {
+    name: name,
+    singer: singer.name,
+    cover: cover,
+    musicSrc: musicSrc,
+  };
+  updateAudioQueue([song], true);
+};
+return (
+  <button className="button" onClick={handleClick}>
+    ▶️
+  </button>
+);
 }
+```
+
+I also implemented the shadowDelete alongside Guy, we pair-programmed for this. It works by changing the isDeleted property of a song to true when a user clicks the delete button.
+
+```javascript
+ 
+const handleShadowDelete = async () => {
+   setShadowDeleted(!shadowDeleted)
+   try {
+     await editSong(props._id, { ...props, isDeleted: true })
+     setOpenModal(false)
+   } catch (e) {
+     console.log(e?.response.data)
+   }
+ }
+ 
+```
+
+Then in `SongList.js` we filter out all songs that have isDeleted true.
+
+```javascript
+ 
+const filteredSongList = songList?.filter(song => !song.isDeleted)
+ 
+```
+
+I worked on the playList and album delete functionality alone. It is very simple. We have an endpoint that deletes an album so I just send the album id after the user clicks the remove button in an album. It is exactly the same for a playlist.
+
+```javascript
+ 
+const handleRemoveAlbum = async () => {
+   try {
+     await deleteAlbum(albumId)
+     history.push('/albums')
+ 
+   } catch (err) {
+     if (err.response) {
+       console.log(err.response.data)
+     }
+     console.log(err)
+   }
+ }
+ 
 ```
 
 ## Screenshots
 
 Songs Page
 
-![song page](./screenshots/song_page.PNG)
+![song page](./screenshots/song_page.png)
 
 Album Page
 
-![song page](./screenshots/album_page.PNG)
+![song page](./screenshots/album_page.png)
 
 Playlist Page
 
-![song page](./screenshots/playlist_page.PNG)
+![song page](./screenshots/playlist_page.png)
 
 Song Upload Page
 
-![Upload page](./screenshots/upload_page.PNG)
+![Upload page](./screenshots/upload_page.png)
 
 Create Album
 
-![Create album](./screenshots/create_album.PNG)
+![Create album](./screenshots/create_album.png)
 
 Create Playlist
 
-![Create playlist](./screenshots/create_playlist.PNG)
+![Create playlist](./screenshots/create_playlist.png)
 
 ## Bugs
 
