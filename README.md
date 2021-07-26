@@ -64,26 +64,26 @@ We as a group wanted to keep things simple for the design as we had a lot to do 
 
 ---
 
-![Homepage prototype](./screenshots/homepage_proto.png "Homepage Prototype")
+<img src="./screenshots/homepage_proto.png" alt="Homepage Prototype">
 
 #### Songs Page
 
 ---
 
-![Songs Page prototype](./screenshots/songspage_proto.png "Songs Page Prototype")
+<img src="./screenshots/songspage_proto.png" alt="Songs Page Prototype">
 
 #### Single Song item component prototype
 
 ---
 
-![Single Song prototype](./screenshots/single_song_item_proto.png "Single Song Prototype")
+<img src="./screenshots/single_song_item_proto.png" alt="Single Song prototype">
 
 ## Backend
 
 For the backend we started by creating all the required models as a group, to do that we planned all the models our website has as show below:
 
-![models](./screenshots/db_models1.png)
-![models](./screenshots/db_models2.png)
+<img src="./screenshots/db_models1.png" alt="models">
+<img src="./screenshots/db_models2.png" alt="models">
 
 Then we coded all the models in the backend as a group, I am not going to show all of them here, but this is the song model:
 
@@ -180,7 +180,7 @@ Which then iterates through all the songs and calls each of them by using the so
 
 This results in this list of songs:
 
-![song list](./screenshots/song_list.png)
+<img alt="song list" src="./screenshots/song_list.png">
 
 The `songListItem` has a further child component called `ControlBar`.
 
@@ -253,27 +253,27 @@ const handleRemoveAlbum = async () => {
 
 Songs Page
 
-![song page](./screenshots/song_page.png)
+<img src="./screenshots/song_page.png" alt="song page">
 
 Album Page
 
-![song page](./screenshots/album_page.png)
+<img src="./screenshots/album_page.png" alt="album page">
 
 Playlist Page
 
-![song page](./screenshots/playlist_page.png)
+<img src="./screenshots/playlist_page.png" alt="playlist page">
 
 Song Upload Page
 
-![Upload page](./screenshots/upload_page.png)
+<img src="./screenshots/upload_page.png" alt="upload song">
 
 Create Album
 
-![Create album](./screenshots/create_album.png)
+<img src="./screenshots/create_album.png" alt="create album">
 
 Create Playlist
 
-![Create playlist](./screenshots/create_playlist.png)
+<img src="./screenshots/create_playlist.png" alt="create playlist">
 
 ## Bugs
 
